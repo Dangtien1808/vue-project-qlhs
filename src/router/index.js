@@ -7,6 +7,7 @@ import Classroom from "../views/Classroom.vue";
 import Student from "../views/Student.vue";
 import Score from "../views/Score.vue";
 import Account from "../views/Account.vue";
+import ProFile from "../views/ProFile.vue";
 Vue.use(Router);
 
 var router = new Router({
@@ -15,6 +16,11 @@ var router = new Router({
       path: "/",
       name: "home",
       component: Home
+    },
+    {
+      path: "/profile",
+      name: "profile",
+      component: ProFile
     },
     {
       path: "/login",

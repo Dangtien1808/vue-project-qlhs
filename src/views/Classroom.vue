@@ -4,16 +4,16 @@
     <div class="card-body">
       <b-card no-body>
         <b-tabs card>
-          <b-tab title="Tab 1">
-            <AddClass/>
-          </b-tab>
-          <b-tab title="Tab 2">
+          <b-tab title="Danh Sách Lớp">
             <ListClass/>
           </b-tab>
-          <b-tab title="Tab 3">
+          <b-tab title="Thông Tin Lớp Học">
             <DetailClass/>
           </b-tab>
-          <b-tab title="Tab 4">
+          <b-tab title="Thêm Lớp Học">
+            <AddClass/>
+          </b-tab>
+          <b-tab title="Thống Kê Kết Quả Học Tập">
             <StatisticalClass/>
           </b-tab>
         </b-tabs>

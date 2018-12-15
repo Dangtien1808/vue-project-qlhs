@@ -1,17 +1,17 @@
 <template>
   <div class="card">
-    <div class="card-header h5">Quản Lý Lớp Học</div>
+    <div class="card-header h5">Quản Lý Tài Khoản Giáo Viên</div>
     <div class="card-body">
       <b-card no-body>
         <b-tabs card>
-          <b-tab title="Tab 1">
-            <AddAccount/>
+          <b-tab title="Danh Sách Tài Khoản">
+            <ListAccount/>
           </b-tab>
-          <b-tab title="Tab 2">
+          <b-tab title="Chi Tiết Tài Khoản">
             <EditAccount/>
           </b-tab>
-          <b-tab title="Tab 3">
-            <ListAccount/>
+          <b-tab title="Thêm Tài Khoản">
+            <AddAccount/>
           </b-tab>
         </b-tabs>
       </b-card>

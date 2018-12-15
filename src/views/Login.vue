@@ -4,27 +4,27 @@
     <div class="card-body">
       <form>
         <div class="form-group">
-          <label for="formGroupExampleInput">Tài khoản:</label>
+          <label for="formGroupExampleInput">Tài khoản</label>
           <input
             type="text"
             class="form-control"
             id="formGroupExampleInput"
-            placeholder="username"
+            placeholder="taikhoan01"
             v-model="user.username"
           >
         </div>
         <div class="form-group">
-          <label for="formGroupExampleInput2">Mật khẩu:</label>
+          <label for="formGroupExampleInput2">Mật khẩu</label>
           <input
             type="password"
             class="form-control"
             id="formGroupExampleInput2"
-            placeholder="password"
+            placeholder="******"
             v-model="user.password"
           >
         </div>
         <div class="form-group">
-          <button @click="login" type="button" class="btn btn-outline-primary">Đăng Nhập</button>
+          <button @click="login" type="button" class="btn btn-primary">Đăng Nhập</button>
         </div>
       </form>
     </div>

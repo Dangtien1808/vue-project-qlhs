@@ -20,8 +20,8 @@
       <!-- Navbar Right Menu -->
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
-          <!-- User Account: style can be found in dropdown.less -->
-          <li class="dropdown user user-menu pull-left">
+          <!-- User Account -->
+          <li v-if="isLogin" class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <img src="~admin-lte/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
               <span class="hidden-xs">{{ currentUser.name }}</span>
@@ -58,35 +58,63 @@
               <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-left">
-                  <a href="#" class="btn btn-default btn-flat">Profile</a>
+                  <router-link to="/profile">
+                    <a href="#" class="btn btn-default btn-flat btn-outline-default">
+                      <i class="fa fa-user"></i>
+                      <span>&nbsp; Profile</span>
+                    </a>
+                  </router-link>
                 </div>
                 <div class="pull-right">
-                  <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                  <a
+                    href="#"
+                    class="btn btn-default btn-flat btn-outline-default"
+                    @click="logout()"
+                  >
+                    <i class="fa fa-user"></i>
+                    <span>&nbsp; Sign out</span>
+                  </a>
                 </div>
               </li>
             </ul>
           </li>
-          <!-- Control Sidebar Toggle Button -->
+          <!-- ./User Account -->
+          <!-- Login -->
+          <li v-else class="dropdown user user-menu">
+            <router-link to="/login">
+              <a class="btn btn-outline-primary" @click="login()">
+                <i class="fa fa-user"></i>
+                <span>&nbsp; Login</span>
+              </a>
+            </router-link>
+          </li>
+          <!-- ./Login -->
         </ul>
       </div>
+      <!-- ./Navbar Right Menu -->
     </nav>
   </header>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
-import logo from "../assets/images.jpg";
 export default {
   name: "NavBar",
 
   data() {
     return {
       isToggle: false,
-      logo: logo
+      isLogin: true
     };
   },
   mounted() {},
   methods: {
+    login() {
+      this.isLogin = true;
+    },
+    logout() {
+      this.isLogin = false;
+    },
     setPage() {
       this.isToggle = !this.isToggle;
     }
@@ -105,9 +133,7 @@ export default {
   line-height: 3 !important;
 }
 .logo-header {
-  /* padding-top: 10px !important; */
-  /* background-color: #222d32 !important; */
-  background-color: #ebeef0 !important;
+  background-color: #ffffff !important;
   height: 70px !important;
 }
 .logoMain {
