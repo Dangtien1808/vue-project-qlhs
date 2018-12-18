@@ -1,5 +1,12 @@
 module.exports = [
   {
+    icon: "fa fa-home",
+    name: "Trang Chủ",
+    router: {
+      name: ""
+    }
+  },
+  {
     icon: "fa fa-laptop",
     name: "Tài Khoản",
     router: {

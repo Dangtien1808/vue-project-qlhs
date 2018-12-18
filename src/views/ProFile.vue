@@ -1,14 +1,14 @@
 <template>
   <div class="card">
-    <div class="card-header h5">Quản Lý Tài Khoản Giáo Viên</div>
+    <div class="card-header h5">Quản Lý Thông Tin Cá Nhân</div>
     <div class="card-body">
       <b-card no-body>
         <b-tabs card>
-          <b-tab title="Thông Tin Cá Nhân">
-            <EditInfo/>
+          <b-tab title="Thông Tin">
+            <EditInfo />
           </b-tab>
-          <b-tab title="Thay Đổi Mật Khẩu">
-            <ChangePassword/>
+          <b-tab title="Đổi Mật Khẩu">
+            <ChangePassword />
           </b-tab>
         </b-tabs>
       </b-card>

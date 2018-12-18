@@ -4,10 +4,10 @@
     <router-link to="/">
       <div class="logo logo-header">
         <span class="logo-mini">
-          <i class="fa fa-home"></i>
+          <img class="logoMain-mini" src="../assets/images.jpg">
         </span>
         <span class="logo-lg">
-          <img class="logoMain" src="../assets/images.jpg">
+          <img class="logoMain-lg" src="../assets/images.jpg">
         </span>
       </div>
     </router-link>
@@ -17,6 +17,14 @@
       <a href="#" class="sidebar-toggle" v-on:click="setPage" data-toggle="push-menu" role="button">
         <span class="sr-only">Toggle navigation</span>
       </a>
+      <!-- ./Sidebar toggle button-->
+      <!-- Navbar Center Header -->
+      <div class="navbar-custom-menu">
+        <h2 style="color:blue">
+          <span>Trường Trung Học Phổ Thông DVT</span>
+        </h2>
+      </div>
+      <!-- ./Navbar Center Header -->
       <!-- Navbar Right Menu -->
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
@@ -59,20 +67,16 @@
               <li class="user-footer">
                 <div class="pull-left">
                   <router-link to="/profile">
-                    <a href="#" class="btn btn-default btn-flat btn-outline-default">
+                    <a href="#" class="btn btn-default btn-flat btn-outline-info">
                       <i class="fa fa-user"></i>
-                      <span>&nbsp; Profile</span>
+                      <span>&nbsp; Thông Tin</span>
                     </a>
                   </router-link>
                 </div>
                 <div class="pull-right">
-                  <a
-                    href="#"
-                    class="btn btn-default btn-flat btn-outline-default"
-                    @click="logout()"
-                  >
+                  <a href="#" class="btn btn-default btn-flat btn-outline-dark" @click="logout()">
                     <i class="fa fa-user"></i>
-                    <span>&nbsp; Sign out</span>
+                    <span>&nbsp; Đăng Xuất</span>
                   </a>
                 </div>
               </li>
@@ -84,7 +88,7 @@
             <router-link to="/login">
               <a class="btn btn-outline-primary" @click="login()">
                 <i class="fa fa-user"></i>
-                <span>&nbsp; Login</span>
+                <span>&nbsp; Đăng Nhập</span>
               </a>
             </router-link>
           </li>
@@ -114,6 +118,7 @@ export default {
     },
     logout() {
       this.isLogin = false;
+      this.$router.push("/login");
     },
     setPage() {
       this.isToggle = !this.isToggle;
@@ -136,7 +141,12 @@ export default {
   background-color: #ffffff !important;
   height: 70px !important;
 }
-.logoMain {
+.logoMain-mini {
+  height: 30px !important;
+  width: 40px !important;
+  margin-top: 10px;
+}
+.logoMain-lg {
   border-radius: 10% !important;
   height: 70px !important;
   width: 140px !important;

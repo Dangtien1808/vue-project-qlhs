@@ -1,127 +1,75 @@
 <template>
   <div class="box box-info">
     <div class="box-header with-border">
-      <h3 class="box-title">Quản Lý Danh Sách Lớp</h3>
-      <!-- <div class="box-tools pull-right"></div> -->
+      <h3 class="box-title">Quản Lý Danh Tài Khoản</h3>
     </div>
     <div class="box-body">
       <div class="table-responsive">
-        <table class="table no-margin">
-          <thead>
-            <tr>
-              <th>Order ID</th>
-              <th>Item</th>
-              <th>Status</th>
-              <th>Popularity</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>
-                <a href="pages/examples/invoice.html">OR9842</a>
-              </td>
-              <td>Call of Duty IV</td>
-              <td>
-                <span class="label label-success">Shipped</span>
-              </td>
-              <td>
-                <div data-color="#00a65a" data-height="20" class="sparkbar">90,80,90,-70,61,-83,63</div>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <a href="pages/examples/invoice.html">OR1848</a>
-              </td>
-              <td>Samsung Smart TV</td>
-              <td>
-                <span class="label label-warning">Pending</span>
-              </td>
-              <td>
-                <div data-color="#f39c12" data-height="20" class="sparkbar">90,80,-90,70,61,-83,68</div>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <a href="pages/examples/invoice.html">OR7429</a>
-              </td>
-              <td>iPhone 6 Plus</td>
-              <td>
-                <span class="label label-danger">Delivered</span>
-              </td>
-              <td>
-                <div data-color="#f56954" data-height="20" class="sparkbar">90,-80,90,70,-61,83,63</div>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <a href="pages/examples/invoice.html">OR7429</a>
-              </td>
-              <td>Samsung Smart TV</td>
-              <td>
-                <span class="label label-info">Processing</span>
-              </td>
-              <td>
-                <div data-color="#00c0ef" data-height="20" class="sparkbar">90,80,-90,70,-61,83,63</div>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <a href="pages/examples/invoice.html">OR1848</a>
-              </td>
-              <td>Samsung Smart TV</td>
-              <td>
-                <span class="label label-warning">Pending</span>
-              </td>
-              <td>
-                <div data-color="#f39c12" data-height="20" class="sparkbar">90,80,-90,70,61,-83,68</div>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <a href="pages/examples/invoice.html">OR7429</a>
-              </td>
-              <td>iPhone 6 Plus</td>
-              <td>
-                <span class="label label-danger">Delivered</span>
-              </td>
-              <td>
-                <div data-color="#f56954" data-height="20" class="sparkbar">90,-80,90,70,-61,83,63</div>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <a href="pages/examples/invoice.html">OR9842</a>
-              </td>
-              <td>Call of Duty IV</td>
-              <td>
-                <span class="label label-success">Shipped</span>
-              </td>
-              <td>
-                <div data-color="#00a65a" data-height="20" class="sparkbar">90,80,90,-70,61,-83,63</div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div id="toolbar">
+          <button id="insert" class="btn btn-primary ml-3">
+            <i class="glyphicon glyphicon-plus icon-plus"></i> Insert
+          </button>
+          <button id="detail" class="btn btn-info ml-3">
+            <i class="glyphicon glyphicon-align-center icon-plus"></i> Detail
+          </button>
+          <button id="remove" class="btn btn-danger ml-3" @click="removeT()">
+            <i class="glyphicon glyphicon-import"></i> Remove
+          </button>
+        </div>
+        <table id="table"></table>
       </div>
     </div>
-    <!-- <div class="box-footer clearfix">
-      <a href="javascript:void(0)" class="btn btn-sm btn-info btn-flat pull-left">Place New Order</a>
-      <a
-        href="javascript:void(0)"
-        class="btn btn-sm btn-default btn-flat pull-right"
-      >View All Orders</a>
-    </div>-->
   </div>
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
 export default {
   data() {
     return {
       isLogin: false
     };
   },
-  mounted() {},
-  methods: {}
+
+  computed: {
+    ...mapGetters(["dataAccount"])
+  },
+  mounted() {
+    this.initTable();
+    this.fetchAllAccount();
+  },
+  methods: {
+    ...mapActions(["fetchAllAccount"]),
+    removeT() {
+      alert(1);
+    },
+    initTable() {
+      this.fetchAllAccount();
+      console.log(this.$store.state.account.main);
+      $("#table").bootstrapTable({
+        columns: ,
+        data: this.dataAccount,
+        classes: "table table-hover",
+        pagination: true,
+        pageSize: 3,
+        pageList: [3, 6, 9, "all"],
+        search: true,
+        singleSelect: true,
+        showRefresh: true
+      });
+      $("#table").on("check.bs.table uncheck.bs.table ", () => {
+        $("#remove").prop(
+          "disabled",
+          !$("#table").bootstrapTable("getSelections").length
+        );
+      });
+      $("#table").on("refresh.bs.table", () => {
+        $("#table").bootstrapTable("resetSearch");
+      });
+    },
+    getIdSelections() {
+      return $.map($("#table").bootstrapTable("getSelections"), ({ id }) => id);
+    }
+  }
 };
 </script>
