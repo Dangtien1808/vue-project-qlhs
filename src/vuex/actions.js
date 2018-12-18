@@ -13,3 +13,14 @@ export const fetchProduct = ({ commit }) => {
       console.error(error);
     });
 };
+
+export const fetchAllAccount = ({ commit }) => {
+  return services.account
+    .getAllAccount()
+    .then(response => {
+      commit(types.FETCH_ACCOUNT, response);
+    })
+    .catch(error => {
+      console.log(error);
+    });
+};

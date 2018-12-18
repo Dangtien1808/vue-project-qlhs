@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <NavBar/>
-    <Slider :slideMenuItems="slideMenuItems"></Slider>
+    <Slider :slideMenuItems="slideMenuItems"/>
     <ContentWrap></ContentWrap>
   </div>
 </template>
@@ -10,6 +10,7 @@ import NavBar from "./components/NavBar.vue";
 import Slider from "./components/Slider.vue";
 import ContentWrap from "./components/ContentWrap.vue";
 import slideMenuItems from "./lib/slideMenuItems.js";
+
 export default {
   data() {
     return {
