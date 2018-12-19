@@ -6,15 +6,13 @@
     <div class="box-body">
       <div class="table-responsive">
         <div id="toolbar">
-          <button id="insert" class="btn btn-primary ml-3">
-            <i class="glyphicon glyphicon-plus icon-plus"></i> Insert
-          </button>
-          <button id="detail" class="btn btn-info ml-3">
-            <i class="glyphicon glyphicon-align-center icon-plus"></i> Detail
-          </button>
-          <button id="remove" class="btn btn-danger ml-3" @click="removeT()">
-            <i class="glyphicon glyphicon-import"></i> Remove
-          </button>
+          <label
+            id="remove"
+            class="btn btn-danger ml-3"
+            @click="removeT"
+          >
+            <i class="glyphicon glyphicon-remove"></i> Remove
+          </label>
         </div>
         <table id="table"></table>
       </div>
@@ -23,32 +21,27 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters } from "vuex";
 export default {
   data() {
     return {
       isLogin: false
     };
   },
-
   computed: {
     ...mapGetters(["dataAccount"])
   },
   mounted() {
     this.initTable();
-    this.fetchAllAccount();
   },
   methods: {
-    ...mapActions(["fetchAllAccount"]),
     removeT() {
       alert(1);
     },
     initTable() {
-      this.fetchAllAccount();
-      console.log(this.$store.state.account.main);
       $("#table").bootstrapTable({
-        columns: ,
-        data: this.dataAccount,
+        columns: this.dataAccount.column,
+        data: this.dataAccount.listItem,
         classes: "table table-hover",
         pagination: true,
         pageSize: 3,
@@ -66,9 +59,6 @@ export default {
       $("#table").on("refresh.bs.table", () => {
         $("#table").bootstrapTable("resetSearch");
       });
-    },
-    getIdSelections() {
-      return $.map($("#table").bootstrapTable("getSelections"), ({ id }) => id);
     }
   }
 };

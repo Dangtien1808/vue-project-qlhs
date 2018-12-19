@@ -1,2 +1,4 @@
 export const FETCH_PRODUCT = "FETCH_PRODUCT";
 export const FETCH_ACCOUNT = "FETCH_ACCOUNT";
+export const FETCH_LOGIN = "FETCH_LOGIN";
+export const FETCH_LOGOUT = "FETCH_LOGOUT";

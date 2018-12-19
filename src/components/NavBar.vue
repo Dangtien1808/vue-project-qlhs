@@ -4,17 +4,29 @@
     <router-link to="/">
       <div class="logo logo-header">
         <span class="logo-mini">
-          <img class="logoMain-mini" src="../assets/images.jpg">
+          <img
+            class="logoMain-mini"
+            src="../assets/images.jpg"
+          >
         </span>
         <span class="logo-lg">
-          <img class="logoMain-lg" src="../assets/images.jpg">
+          <img
+            class="logoMain-lg"
+            src="../assets/images.jpg"
+          >
         </span>
       </div>
     </router-link>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">
       <!-- Sidebar toggle button-->
-      <a href="#" class="sidebar-toggle" v-on:click="setPage" data-toggle="push-menu" role="button">
+      <a
+        href="#"
+        class="sidebar-toggle"
+        v-on:click="setPage"
+        data-toggle="push-menu"
+        role="button"
+      >
         <span class="sr-only">Toggle navigation</span>
       </a>
       <!-- ./Sidebar toggle button-->
@@ -29,9 +41,20 @@
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
           <!-- User Account -->
-          <li v-if="isLogin" class="dropdown user user-menu">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <img src="~admin-lte/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+          <li
+            v-if="isLogin"
+            class="dropdown user user-menu"
+          >
+            <a
+              href="#"
+              class="dropdown-toggle"
+              data-toggle="dropdown"
+            >
+              <img
+                src="~admin-lte/dist/img/user2-160x160.jpg"
+                class="user-image"
+                alt="User Image"
+              >
               <span class="hidden-xs">{{ currentUser.name }}</span>
             </a>
             <ul class="dropdown-menu">
@@ -67,14 +90,21 @@
               <li class="user-footer">
                 <div class="pull-left">
                   <router-link to="/profile">
-                    <a href="#" class="btn btn-default btn-flat btn-outline-info">
+                    <a
+                      href="#"
+                      class="btn btn-default btn-flat btn-outline-info"
+                    >
                       <i class="fa fa-user"></i>
                       <span>&nbsp; Thông Tin</span>
                     </a>
                   </router-link>
                 </div>
                 <div class="pull-right">
-                  <a href="#" class="btn btn-default btn-flat btn-outline-dark" @click="logout()">
+                  <a
+                    href="#"
+                    class="btn btn-default btn-flat btn-outline-dark"
+                    @click="logout()"
+                  >
                     <i class="fa fa-user"></i>
                     <span>&nbsp; Đăng Xuất</span>
                   </a>
@@ -84,9 +114,15 @@
           </li>
           <!-- ./User Account -->
           <!-- Login -->
-          <li v-else class="dropdown user user-menu">
+          <li
+            v-else
+            class="dropdown user user-menu"
+          >
             <router-link to="/login">
-              <a class="btn btn-outline-primary" @click="login()">
+              <a
+                class="btn btn-outline-primary"
+                @click="login()"
+              >
                 <i class="fa fa-user"></i>
                 <span>&nbsp; Đăng Nhập</span>
               </a>
@@ -108,24 +144,29 @@ export default {
   data() {
     return {
       isToggle: false,
-      isLogin: true
+      isLogin: false
     };
+  },
+  computed: {
+    ...mapGetters(["currentUser"])
   },
   mounted() {},
   methods: {
+    checkSession() {
+      return this.$session.exists();
+    },
     login() {
       this.isLogin = true;
+      this.$router.push("/login");
     },
     logout() {
+      this.$session.destroy();
       this.isLogin = false;
       this.$router.push("/login");
     },
     setPage() {
       this.isToggle = !this.isToggle;
     }
-  },
-  computed: {
-    ...mapGetters(["currentUser"])
   }
 };
 </script>
