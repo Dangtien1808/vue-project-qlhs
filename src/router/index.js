@@ -8,6 +8,9 @@ import Student from "../views/Student.vue";
 import Score from "../views/Score.vue";
 import Account from "../views/Account.vue";
 import ProFile from "../views/ProFile.vue";
+
+import store from "../vuex/store";
+
 Vue.use(Router);
 
 var router = new Router({
@@ -15,60 +18,66 @@ var router = new Router({
     {
       path: "/",
       name: "home",
-      component: Home
+      component: Home,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: "/profile",
       name: "profile",
-      component: ProFile
+      component: ProFile,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: "/login",
       name: "login",
-      component: Login
-      // meta: {
-      //   requiresAuth: false
-      // }
+      component: Login,
+      meta: {
+        requiresAuth: false
+      }
     },
     {
       path: "/classroom",
       name: "classroom",
-      component: Classroom
-      // meta: {
-      //   requiresAuth: true
-      // }
+      component: Classroom,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: "/student",
       name: "student",
-      component: Student
-      // meta: {
-      //   requiresAuth: true
-      // }
+      component: Student,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: "/score",
       name: "score",
-      component: Score
-      // meta: {
-      //   requiresAuth: true
-      // }
+      component: Score,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: "/account",
       name: "account",
-      component: Account
-      // meta: {
-      //   requiresAuth: true
-      // }
+      component: Account,
+      meta: {
+        requiresAuth: true
+      }
     }
   ]
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.matched.some(record => record.meta.requiresAuth)) {
-    var token = localStorage.access_token;
-    if (typeof token === "undefined") {
+  const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+  if (requiresAuth) {
+    if (!router.app.$session.exists()) {
       next({
         path: "/login",
         query: {
@@ -76,11 +85,11 @@ router.beforeEach((to, from, next) => {
         }
       });
     } else {
-      next();
+      store.dispatch("fetchAllAccount");
     }
-  } else {
-    next();
   }
+
+  next();
 });
 
 export default router;

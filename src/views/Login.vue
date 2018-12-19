@@ -24,7 +24,11 @@
           >
         </div>
         <div class="form-group">
-          <button @click="login" type="button" class="btn btn-primary">Đăng Nhập</button>
+          <button
+            @click="login"
+            type="button"
+            class="btn btn-primary"
+          >Đăng Nhập</button>
         </div>
       </form>
     </div>
@@ -32,6 +36,8 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
   data() {
     return {
@@ -41,12 +47,19 @@ export default {
       }
     };
   },
+  beforeCreate: function() {
+    if (this.$session.exists()) {
+      this.$router.push("/");
+    }
+  },
   methods: {
+    ...mapActions(["setLogin"]),
     login() {
-      var self = this;
-      if (self.user.username === "nndkhoa" && self.user.password === "123") {
-        localStorage.access_token = "nndkhoa_token";
-        self.$router.push("/");
+      if (this.user.username === "admin" && this.user.password === "123123") {
+        this.$session.start();
+        this.$session.set("username", this.user.username);
+        this.setLogin();
+        this.$router.push("/");
         return;
       }
     }

@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
-    <NavBar/>
-    <Slider :slideMenuItems="slideMenuItems"/>
+    <NavBar />
+    <Slider :slideMenuItems="slideMenuItems" />
     <ContentWrap></ContentWrap>
   </div>
 </template>
