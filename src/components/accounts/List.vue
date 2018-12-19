@@ -1,18 +1,19 @@
 <template>
   <div class="box box-info">
-    <div class="box-header with-border">
-      <h3 class="box-title">Quản Lý Danh Tài Khoản</h3>
+    <div class="box-header with-border text-center">
+      <h2 class="box-title">Thêm Tài Khoản Giáo Viên</h2>
     </div>
     <div class="box-body">
       <div class="table-responsive">
         <div id="toolbar">
-          <label
+          <button
             id="remove"
-            class="btn btn-danger ml-3"
+            class="btn btn-danger mr-3"
             @click="removeT"
+            disabled
           >
             <i class="glyphicon glyphicon-remove"></i> Remove
-          </label>
+          </button>
         </div>
         <table id="table"></table>
       </div>
@@ -21,7 +22,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 export default {
   data() {
     return {
@@ -32,9 +33,11 @@ export default {
     ...mapGetters(["dataAccount"])
   },
   mounted() {
+    this.fetchAllAccount();
     this.initTable();
   },
   methods: {
+    ...mapActions(["fetchAllAccount"]),
     removeT() {
       alert(1);
     },
@@ -44,11 +47,12 @@ export default {
         data: this.dataAccount.listItem,
         classes: "table table-hover",
         pagination: true,
-        pageSize: 3,
-        pageList: [3, 6, 9, "all"],
+        pageSize: 5,
+        pageList: [5, 10, 20, "all"],
         search: true,
         singleSelect: true,
-        showRefresh: true
+        showRefresh: true,
+        toolbar: "#toolbar"
       });
       $("#table").on("check.bs.table uncheck.bs.table ", () => {
         $("#remove").prop(
@@ -63,3 +67,6 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+</style>
