@@ -224,9 +224,9 @@ export default {
     this.getSubjects().then(req => console.log(req));
   },
   methods: {
-    ...mapActions(["getSubjects", "addGiaoVien"]),
+    ...mapActions(["getSubjects", "addAccount"]),
     AddUserUser() {
-      this.addGiaoVien(this.user).then(req => {
+      this.addAccount(this.user).then(req => {
         if (req) {
           alert("Them Giao Vien " + this.user.hoten + " Thanh Cong!!!");
         }

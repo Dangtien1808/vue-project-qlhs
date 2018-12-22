@@ -7,7 +7,10 @@
           <b-tab title="Danh Sách Lớp">
             <ListClass />
           </b-tab>
-          <b-tab title="Thông Tin Lớp Học">
+          <b-tab
+            title="Thông Tin Lớp Học"
+            :disabled="selectClass"
+          >
             <DetailClass />
           </b-tab>
           <b-tab title="Thêm Lớp Học">
@@ -27,6 +30,7 @@ import AddClass from "../components/classrooms/Add.vue";
 import DetailClass from "../components/classrooms/Detail.vue";
 import ListClass from "../components/classrooms/List.vue";
 import StatisticalClass from "../components/classrooms/Statistical.vue";
+import { mapGetters } from "vuex";
 
 export default {
   components: {
@@ -34,6 +38,9 @@ export default {
     DetailClass,
     ListClass,
     StatisticalClass
+  },
+  computed: {
+    ...mapGetters(["selectClass"])
   },
   beforeCreate() {
     if (!this.$session.get("username")) {

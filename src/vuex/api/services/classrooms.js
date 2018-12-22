@@ -1,21 +1,21 @@
 import axios from "axios";
 
 export default {
-  getAllAccount(request = {}) {
+  getAllClass(request = {}) {
     return axios
-      .get("http://localhost:3000/teachers", request)
+      .get("http://localhost:3000/class", request)
       .then(response => Promise.resolve(response))
       .catch(error => Promise.reject(error));
   },
-  deleteAccount(id = "") {
+  deleteClass(id = "") {
     return axios
-      .post("http://localhost:3000/teachers/delete", { taikhoan: id })
+      .post("http://localhost:3000/class/delete", { malop: id })
       .then(response => Promise.resolve(response))
       .catch(error => Promise.reject(error));
   },
-  addAccount(data = {}) {
+  addClass(data = {}) {
     return axios
-      .post("http://localhost:3000/teachers/add", data)
+      .post("http://localhost:3000/class/add", data)
       .then(response => Promise.resolve(response))
       .catch(error => Promise.reject(error));
   }

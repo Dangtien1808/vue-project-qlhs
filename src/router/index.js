@@ -87,7 +87,7 @@ router.beforeEach((to, from, next) => {
     } else {
       store.dispatch("setIsLogin");
       store.dispatch("loadInfoUser", router.app.$session.get("username"));
-      store.dispatch("fetchAllAccount");
+      // store.dispatch("fetchAllAccount");
     }
   }
 

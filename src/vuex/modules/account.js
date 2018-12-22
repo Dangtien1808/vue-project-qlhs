@@ -6,23 +6,74 @@ const state = {
 };
 
 const getters = {
+  headerDataAccount(state) {
+    return state.main.column;
+  },
   dataAccount(state) {
-    return state.main;
+    return state.main.listItem;
   }
 };
 
 const actions = {
   fetchAllAccount({ commit }) {
-    return services.account
-      .getAllAccount()
-      .then(response => {
-        commit(types.FETCH_ACCOUNT, response);
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    return new Promise((resolve, reject) => {
+      services.account
+        .getAllAccount()
+        .then(response => {
+          if (response.status == 200) {
+            commit(types.FETCH_ACCOUNT, response.data);
+            resolve(true);
+          } else {
+            resolve(false);
+          }
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  deleteAccount(ctx, id) {
+    return new Promise((resolve, reject) => {
+      services.account
+        .deleteAccount(id)
+        .then(response => {
+          if (response.status == 200) {
+            resolve(true);
+          } else {
+            resolve(false);
+          }
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  addAccount(ctx, data) {
+    return new Promise((resolve, reject) => {
+      services.teachers
+        .addAccount(data)
+        .then(res => {
+          console.log(res.status);
+          if (res.status === 201) {
+            console.log(res.data);
+            if (res.data.taikhoan) {
+              console.log(res.data.taikhoan);
+              resolve(true);
+            } else {
+              resolve(false);
+            }
+          } else {
+            resolve(false);
+          }
+        })
+        .catch(error => {
+          reject(false);
+          console.log(error);
+        });
+    });
   }
 };
+
 const mutations = {
   [types.FETCH_ACCOUNT](state, accounts) {
     state.main.listItem = accounts;

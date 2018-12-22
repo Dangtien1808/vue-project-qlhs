@@ -2,19 +2,18 @@ import * as types from "../mutation-types";
 import { services } from "../api";
 
 const state = {
-  main: { data: [] }
+  main: []
 };
 const actions = {
-  addGiaoVien(ctx, data) {
+  getLevelClass(ctx) {
     return new Promise((resolve, reject) => {
-      services.teachers
-        .addTeachers(data)
+      services.subjects
+        .getAll()
         .then(res => {
-          console.log(res.status);
-          if (res.status === 201) {
-            console.log(res.data);
-            if (res.data.taikhoan) {
-              console.log(res.data.taikhoan);
+          resolve(true);
+          if (res.status === 200) {
+            if (res.data) {
+              ctx.commit(types.FETCH_LEVELCLASS, res.data);
               resolve(true);
             } else {
               resolve(false);
@@ -31,13 +30,13 @@ const actions = {
   }
 };
 const getters = {
-  danhsachGiaoVien(state) {
-    return state.main.data;
+  listLevelClass(state) {
+    return state.main;
   }
 };
 const mutations = {
-  [types.FETCH_LOGIN](state, data) {
-    state.main.data = data;
+  [types.FETCH_LEVELCLASS](state, data) {
+    state.main = data;
   }
 };
 

@@ -1,7 +1,7 @@
 <template>
   <div class="box box-info">
     <div class="box-header with-border text-center">
-      <h2 class="box-title">Thêm Tài Khoản Giáo Viên</h2>
+      <h2 class="box-title">Danh Sách Tài Khoản Giáo Viên</h2>
     </div>
     <div class="box-body">
       <div class="table-responsive">
@@ -30,25 +30,60 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["dataAccount"])
+    ...mapGetters(["dataAccount", "headerDataAccount"])
   },
   mounted() {
-    this.fetchAllAccount();
-    this.initTable();
+    this.fetchAllAccount()
+      .then(res => {
+        if (res) {
+          this.initTable();
+        }
+      })
+      .catch(error => console.log(error));
   },
   methods: {
-    ...mapActions(["fetchAllAccount"]),
+    ...mapActions(["fetchAllAccount", "deleteAccount"]),
     removeT() {
-      alert(1);
+      let ids = $.map($("#table").bootstrapTable("getSelections"), function(
+        row
+      ) {
+        return row.taikhoan;
+      });
+      if (ids != null) {
+        let id = ids;
+        this.deleteAccount(id[0])
+          .then(res => {
+            if (res) {
+              this.fetchAllAccount()
+                .then(res => {
+                  if (res) {
+                    $("#table").bootstrapTable("remove", {
+                      field: "taikhoan",
+                      values: id
+                    });
+                    $("#remove").prop(
+                      "disabled",
+                      !$("#table").bootstrapTable("getSelections").length
+                    );
+                    ids = null;
+                    alert("Thanh Cong!!!");
+                  }
+                })
+                .catch(error => console.log(error));
+            }
+          })
+          .catch(err => console.log(err));
+      }
     },
     initTable() {
+      let that = this;
       $("#table").bootstrapTable({
-        columns: this.dataAccount.column,
-        data: this.dataAccount.listItem,
+        columns: that.headerDataAccount,
+        data: that.dataAccount,
         classes: "table table-hover",
         pagination: true,
         pageSize: 5,
-        pageList: [5, 10, 20, "all"],
+        pageList: [5, 10, 15, "all"],
         search: true,
         singleSelect: true,
         showRefresh: true,
