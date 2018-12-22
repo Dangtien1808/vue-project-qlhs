@@ -17,13 +17,13 @@ module.exports = {
       valign: "middle"
     },
     {
-      field: "makhoi",
+      field: "tenkhoi",
       title: "Khối",
       align: "center",
       valign: "middle"
     },
     {
-      field: "giaovienchunhiem",
+      field: "hoten",
       title: "Giáo Viên Chủ Nhiệm",
       valign: "middle"
     },

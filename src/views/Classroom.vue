@@ -16,7 +16,10 @@
           <b-tab title="Thêm Lớp Học">
             <AddClass />
           </b-tab>
-          <b-tab title="Thống Kê Kết Quả Học Tập">
+          <b-tab
+            title="Thống Kê Kết Quả Học Tập"
+            :disabled="selectClass"
+          >
             <StatisticalClass />
           </b-tab>
         </b-tabs>
