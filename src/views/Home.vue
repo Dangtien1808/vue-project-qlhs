@@ -7,11 +7,11 @@
 
 <script>
 export default {
-  components: {}
-  // beforeCreate() {
-  //   if (!this.$session.exists()) {
-  //     this.$router.push("/login");
-  //   }
-  // }
+  components: {},
+  beforeCreate() {
+    if (!this.$session.get("username")) {
+      this.$router.push("/login");
+    }
+  }
 };
 </script>

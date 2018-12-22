@@ -24,6 +24,11 @@ export default {
   components: {
     EditInfo,
     ChangePassword
+  },
+  beforeCreate() {
+    if (!this.$session.get("username")) {
+      this.$router.push("/login");
+    }
   }
 };
 </script>

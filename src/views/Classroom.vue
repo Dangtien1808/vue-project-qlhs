@@ -5,16 +5,16 @@
       <b-card no-body>
         <b-tabs card>
           <b-tab title="Danh Sách Lớp">
-            <ListClass/>
+            <ListClass />
           </b-tab>
           <b-tab title="Thông Tin Lớp Học">
-            <DetailClass/>
+            <DetailClass />
           </b-tab>
           <b-tab title="Thêm Lớp Học">
-            <AddClass/>
+            <AddClass />
           </b-tab>
           <b-tab title="Thống Kê Kết Quả Học Tập">
-            <StatisticalClass/>
+            <StatisticalClass />
           </b-tab>
         </b-tabs>
       </b-card>
@@ -34,6 +34,11 @@ export default {
     DetailClass,
     ListClass,
     StatisticalClass
+  },
+  beforeCreate() {
+    if (!this.$session.get("username")) {
+      this.$router.push("/login");
+    }
   }
 };
 </script>

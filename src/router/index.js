@@ -77,14 +77,16 @@ var router = new Router({
 router.beforeEach((to, from, next) => {
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
   if (requiresAuth) {
-    if (!router.app.$session.exists()) {
+    if (!router.app.$session.get("username")) {
       next({
-        path: "/login",
-        query: {
-          redirect: to.fullPath
-        }
+        path: "/login"
+        // query: {
+        //   redirect: to.fullPath
+        // }
       });
     } else {
+      store.dispatch("setIsLogin");
+      store.dispatch("loadInfoUser", router.app.$session.get("username"));
       store.dispatch("fetchAllAccount");
     }
   }

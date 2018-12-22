@@ -23,7 +23,6 @@
       <a
         href="#"
         class="sidebar-toggle"
-        v-on:click="setPage"
         data-toggle="push-menu"
         role="button"
       >
@@ -55,34 +54,22 @@
                 class="user-image"
                 alt="User Image"
               >
-              <span class="hidden-xs">{{ currentUser.name }}</span>
+              <span class="hidden-xs">{{ currentUser.hoten }}</span>
             </a>
             <ul class="dropdown-menu">
-              <!-- User image -->
-              <li class="user-header">
-                <img
-                  src="~admin-lte/dist/img/user2-160x160.jpg"
-                  class="img-circle"
-                  alt="User Image"
-                >
-
-                <p>
-                  {{ currentUser.name }} - {{ currentUser.position }}
-                  <small>{{ currentUser.createdAt }}</small>
-                </p>
-              </li>
               <!-- Menu Body -->
               <li class="user-body">
                 <row>
-                  <div class="col-xs-4 text-center">
-                    <a href="#">Followers</a>
-                  </div>
-                  <div class="col-xs-4 text-center">
-                    <a href="#">Sales</a>
-                  </div>
-                  <div class="col-xs-4 text-center">
-                    <a href="#">Friends</a>
-                  </div>
+                  <label class="col-sm-4 mr-1"><b>Họ Tên:</b></label>
+                  <div class="col-sm"> <b>{{currentUser.hoten}}</b></div>
+                </row>
+                <row>
+                  <label class="col-sm-4 mr-1"><b>email:</b></label>
+                  <div class="col-sm"> <b>{{currentUser.email}}</b></div>
+                </row>
+                <row>
+                  <label class="col-sm-4 mr-1"><b>SĐT:</b></label>
+                  <div class="col-sm"> <b>{{currentUser.sdt}}</b></div>
                 </row>
                 <!-- /.row -->
               </li>
@@ -137,35 +124,32 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapState, mapGetters, mapActions } from "vuex";
 export default {
   name: "NavBar",
 
   data() {
-    return {
-      isToggle: false,
-      isLogin: false
-    };
+    return {};
   },
   computed: {
-    ...mapGetters(["currentUser"])
+    ...mapGetters(["currentUser"]),
+    ...mapState({
+      isLogin: state => state.user.main.isLogin
+    })
   },
   mounted() {},
   methods: {
-    checkSession() {
-      return this.$session.exists();
-    },
+    ...mapActions(["setLogout"]),
     login() {
-      this.isLogin = true;
       this.$router.push("/login");
     },
     logout() {
-      this.$session.destroy();
-      this.isLogin = false;
-      this.$router.push("/login");
-    },
-    setPage() {
-      this.isToggle = !this.isToggle;
+      this.setLogout().then(req => {
+        if (req) {
+          this.$session.destroy();
+          this.$router.push("/login");
+        }
+      });
     }
   }
 };
@@ -191,5 +175,12 @@ export default {
   border-radius: 10% !important;
   height: 70px !important;
   width: 140px !important;
+}
+.user-body {
+  background-color: gray;
+  color: white;
+}
+.dropdown-menu {
+  width: 360px !important;
 }
 </style>

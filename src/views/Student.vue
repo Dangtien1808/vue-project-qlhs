@@ -5,16 +5,16 @@
       <b-card no-body>
         <b-tabs card>
           <b-tab title="Danh Sách Học sinh">
-            <AddStudent/>
+            <AddStudent />
           </b-tab>
           <b-tab title="Thông Tin Học Sinh">
-            <ListStudent/>
+            <ListStudent />
           </b-tab>
           <b-tab title="Thêm Học Sinh">
-            <DetailStudent/>
+            <DetailStudent />
           </b-tab>
           <b-tab title="Bảng Điểm">
-            <StatisticalPointStudent/>
+            <StatisticalPointStudent />
           </b-tab>
         </b-tabs>
       </b-card>
@@ -35,6 +35,11 @@ export default {
     DetailStudent,
     ListStudent,
     StatisticalPointStudent
+  },
+  beforeCreate() {
+    if (!this.$session.get("username")) {
+      this.$router.push("/login");
+    }
   }
 };
 </script>

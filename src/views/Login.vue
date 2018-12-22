@@ -10,7 +10,7 @@
             class="form-control"
             id="formGroupExampleInput"
             placeholder="taikhoan01"
-            v-model="user.username"
+            v-model="user.taikhoan"
           >
         </div>
         <div class="form-group">
@@ -20,7 +20,7 @@
             class="form-control"
             id="formGroupExampleInput2"
             placeholder="******"
-            v-model="user.password"
+            v-model="user.matkhau"
           >
         </div>
         <div class="form-group">
@@ -42,25 +42,30 @@ export default {
   data() {
     return {
       user: {
-        username: "",
-        password: ""
+        taikhoan: "",
+        matkhau: ""
       }
     };
   },
+
+  computed: {},
   beforeCreate: function() {
-    if (this.$session.exists()) {
+    if (this.$session.get("username")) {
       this.$router.push("/");
     }
   },
   methods: {
     ...mapActions(["setLogin"]),
     login() {
-      if (this.user.username === "admin" && this.user.password === "123123") {
-        this.$session.start();
-        this.$session.set("username", this.user.username);
-        this.setLogin();
-        this.$router.push("/");
-        return;
+      const that = this;
+      if (that.user.taikhoan !== "" && that.user.matkhau !== "") {
+        that.setLogin(that.user).then(req => {
+          if (req) {
+            that.$session.start();
+            that.$session.set("username", that.user.taikhoan);
+            that.$router.push("/");
+          }
+        });
       }
     }
   }

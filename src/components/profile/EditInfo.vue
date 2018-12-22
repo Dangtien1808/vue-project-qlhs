@@ -10,27 +10,33 @@
             <form>
               <div class="form-group row">
                 <label class="col-sm-3"></label>
-                <label for="username" class="col-sm-2 col-form-label">Tài Khoản</label>
+                <label
+                  for="taikhoan"
+                  class="col-sm-2 col-form-label"
+                >Tài Khoản</label>
                 <div class="col-sm-4">
                   <input
                     type="text"
                     class="form-control-plaintext"
-                    id="username"
-                    v-model="user.username"
+                    id="taikhoan"
+                    v-model="user.taikhoan"
                     disabled
                   >
                 </div>
               </div>
               <div class="form-group row">
                 <label class="col-sm-3"></label>
-                <label for="password" class="col-sm-2 col-form-label">Mật Khẩu</label>
+                <label
+                  for="matkhau"
+                  class="col-sm-2 col-form-label"
+                >Mật Khẩu</label>
                 <div class="col-sm-4">
                   <input
                     type="password"
                     class="form-control-plaintext"
-                    id="password"
+                    id="matkhau"
                     placeholder="******"
-                    v-model="user.password"
+                    v-model="user.matkhau"
                     disabled
                   >
                 </div>
@@ -38,13 +44,16 @@
               <hr>
               <div class="form-group row">
                 <label class="col-sm-3"></label>
-                <label class="col-sm-2 col-form-label" for="member-name">Họ Tên</label>
+                <label
+                  class="col-sm-2 col-form-label"
+                  for="hoten"
+                >Họ Tên</label>
                 <div class="col-sm-4">
                   <input
                     type="text"
-                    id="member-name"
+                    id="hoten"
                     required
-                    v-model="user.membername"
+                    v-model="user.hoten"
                     :class="classText"
                     :disabled="isNotEdit"
                   >
@@ -52,7 +61,10 @@
               </div>
               <div class="form-group row">
                 <label class="col-sm-3"></label>
-                <label for="email" class="col-sm-2 col-form-label">Thư Điện Tử</label>
+                <label
+                  for="email"
+                  class="col-sm-2 col-form-label"
+                >Thư Điện Tử</label>
                 <div class="col-sm-4">
                   <input
                     type="email"
@@ -67,41 +79,70 @@
 
               <div class="form-group row">
                 <label class="col-sm-3"></label>
-                <label for="bithday" class="col-sm-2 col-form-label">Ngày Sinh</label>
-                <div class="col-sm-4">
-                  <input
-                    type="date"
-                    id="bithday"
-                    required
-                    v-model="user.bithday"
-                    :class="classText"
-                    :disabled="isNotEdit"
-                  >
-                </div>
-              </div>
-              <div class="form-group row">
-                <label class="col-sm-3"></label>
-                <label for="tellphone" class="col-sm-2 col-form-label">SDT</label>
+                <label
+                  for="sdt"
+                  class="col-sm-2 col-form-label"
+                >SDT</label>
                 <div class="col-sm-4">
                   <input
                     type="tel"
-                    id="tellphone"
+                    id="sdt"
                     required
-                    v-model="user.tellphone"
+                    v-model="user.sdt"
                     :class="classText"
                     :disabled="isNotEdit"
                   >
                 </div>
               </div>
+
               <div class="form-group row">
                 <label class="col-sm-3"></label>
-                <label for="address" class="col-sm-2 col-form-label">Địa Chỉ</label>
+                <label
+                  for="ngaysinh"
+                  class="col-sm-2 col-form-label"
+                >Ngày Sinh</label>
+                <div class="col-sm-4">
+                  <input
+                    type="date"
+                    id="ngaysinh"
+                    required
+                    v-model="user.ngaysinh"
+                    :class="classText"
+                    :disabled="isNotEdit"
+                  >
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label class="col-sm-3"></label>
+                <label
+                  for="gioitinh"
+                  class="col-sm-2 col-form-label"
+                >gioitinh</label>
+                <div class="col-sm-4">
+                  <select
+                    id="gioitinh"
+                    v-model="user.gioitinh"
+                    :disabled="isNotEdit"
+                  >
+                    <option value="0">Nam</option>
+                    <option value="1">Nữ</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label class="col-sm-3"></label>
+                <label
+                  for="diachi"
+                  class="col-sm-2 col-form-label"
+                >Địa Chỉ</label>
                 <div class="col-sm-4">
                   <textarea
                     class="form-control noresize"
                     rows="4"
-                    id="address"
-                    model="user.address"
+                    id="diachi"
+                    v-model="user.diachi"
                     :disabled="isNotEdit"
                   ></textarea>
                 </div>
@@ -144,29 +185,40 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
 export default {
   data() {
     return {
       user: {
-        membername: "Đặng Văn Tiến",
-        username: "vantien",
-        email: "dangvantien1808@gmail.com",
-        bithday: "2018-12-17",
-        tellphone: "0123456789",
-        address:
-          "123/3 ấp Mường Mu, xã Mường Thanh, Huyện Mường Chu, tỉnh Mường Mường A"
+        taikhoan: "",
+        matkhau: "",
+        email: "",
+        hoten: "",
+        ngaysinh: "",
+        sdt: "",
+        diachi: "",
+        gioitinh: 0
       },
       classText: "form-control-plaintext",
       isNotEdit: true
     };
   },
-  computed: {},
-  mounted() {},
+  computed: {
+    ...mapGetters(["currentUserEdit"])
+  },
+  mounted() {
+    this.resetDataEditUser();
+  },
   methods: {
+    ...mapActions(["editUser", "loadInfoUser"]),
     EditUser() {
-      console.log(2);
+      this.editUser(this.user).then(req => {
+        if (req) {
+          alert("thay doi thanh cong!!!");
+          this.setNotEdit();
+        }
+      });
     },
-
     setEdit() {
       this.isNotEdit = false;
       this.classText = "form-control form-control-plaintext";
@@ -176,7 +228,18 @@ export default {
       this.classText = "form-control-plaintext";
     },
     resetDataEditUser() {
-      console.log(1);
+      const that = this;
+      that.loadInfoUser(that.$session.get("username")).then(res => {
+        if (res) {
+          that.user.taikhoan = that.currentUserEdit.taikhoan;
+          that.user.email = that.currentUserEdit.email;
+          that.user.hoten = that.currentUserEdit.hoten;
+          that.user.ngaysinh = that.currentUserEdit.ngaysinh;
+          that.user.sdt = that.currentUserEdit.sdt;
+          that.user.diachi = that.currentUserEdit.diachi;
+          that.user.gioitinh = that.currentUserEdit.gioitinh;
+        }
+      });
     }
   }
 };

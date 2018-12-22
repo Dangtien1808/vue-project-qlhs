@@ -28,6 +28,11 @@ export default {
     AddAccount,
     ListAccount
   },
+  beforeCreate() {
+    if (!this.$session.get("username")) {
+      this.$router.push("/login");
+    }
+  },
   computed: {},
   mounted() {},
   methods: {}

@@ -5,13 +5,13 @@
       <b-card no-body>
         <b-tabs card>
           <b-tab title="Thông Tin Điểm Môn Học">
-            <TablePoints/>
+            <TablePoints />
           </b-tab>
           <b-tab title="Nhập Điểm">
-            <InputPoints/>
+            <InputPoints />
           </b-tab>
           <b-tab title="Chỉnh Sửa Điểm">
-            <EditPoints/>
+            <EditPoints />
           </b-tab>
         </b-tabs>
       </b-card>
@@ -30,6 +30,11 @@ export default {
     TablePoints,
     InputPoints,
     EditPoints
+  },
+  beforeCreate() {
+    if (!this.$session.get("username")) {
+      this.$router.push("/login");
+    }
   }
 };
 </script>
