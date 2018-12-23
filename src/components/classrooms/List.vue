@@ -8,12 +8,19 @@
       <div class="table-responsive">
         <div id="toolbar">
           <button
+            id="AddClass"
+            class="btn btn-success mr-3"
+            @click="addClass"
+          >
+            <i class="glyphicon glyphicon-remove"></i>Thêm Lớp Mới
+          </button>
+          <button
             id="detailClass"
-            class="btn btn-info mr-3"
+            class="btn btn-warning mr-3"
             @click="detailClass"
             disabled
           >
-            <i class="glyphicon glyphicon-remove"></i> Chi Tiết
+            <i class="glyphicon glyphicon-remove"></i> Chi Tiết Thông Tin Lớp
           </button>
 
           <button
@@ -22,7 +29,7 @@
             @click="statisticalClass"
             disabled
           >
-            <i class="glyphicon glyphicon-remove"></i> Thành Tích của Lớp
+            <i class="glyphicon glyphicon-remove"></i> Thành Tích Học Tập của Lớp
           </button>
 
           <button
@@ -31,7 +38,7 @@
             @click="removeClass"
             disabled
           >
-            <i class="glyphicon glyphicon-remove"></i> Xóa
+            <i class="glyphicon glyphicon-remove"></i> Xóa Lớp
           </button>
         </div>
         <table id="table1"></table>
@@ -71,6 +78,9 @@ export default {
       "setCodeSelectClass",
       "getInfoDetailClass"
     ]),
+    addClass() {
+      this.$router.push("/classroom/add");
+    },
     detailClass() {
       let ids = $.map($("#table1").bootstrapTable("getSelections"), function(
         row

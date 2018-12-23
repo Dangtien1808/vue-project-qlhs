@@ -18,7 +18,7 @@
                   <input
                     type="text"
                     id="classname-detail"
-                    v-model="classes.tenlop"
+                    v-model="student.hoten"
                     :class="classText"
                     :disabled="isNotEdit"
                   >
@@ -36,13 +36,10 @@
                     :class="classText"
                     id="level-class-detail"
                     :disabled="isNotEdit"
-                    v-model="classes.makhoi"
+                    v-model="student.gioitinh"
                   >
-                    <option
-                      v-for="levelClass in listLevelClass"
-                      :key="levelClass.makhoi"
-                      :value="levelClass.makhoi"
-                    >{{levelClass.tenkhoi}}</option>
+                    <option value="0">Nam</option>
+                    <option value="1">Nữ</option>
                   </select>
                 </div>
               </div>
@@ -50,38 +47,15 @@
               <div class="form-group row">
                 <label class="col-sm-3"></label>
                 <label
-                  for="teacher-detail"
+                  for="ngaysinh"
                   class="col-sm-2 col-form-label"
-                >Giáo Viên Chủ Nhiệm</label>
-                <div class="col-sm-4">
-                  <select
-                    :class="classText"
-                    id="teacher-detail"
-                    :disabled="isNotEdit"
-                    v-model="classes.giaovienchunhiem"
-                    required
-                  >
-                    <option
-                      v-for="teacher in dataAccount"
-                      :key="teacher.taikhoan"
-                      :value="teacher.taikhoan"
-                    >{{teacher.hoten}}</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="form-group row">
-                <label class="col-sm-3"></label>
-                <label
-                  for="Siso-add"
-                  class="col-sm-2 col-form-label"
-                >Sí Số Tối Đa</label>
+                >Ngày Sinh</label>
                 <div class="col-sm-4">
                   <input
-                    type="number"
-                    id="Siso-add"
-                    placeholder="0123456789"
-                    v-model="classes.sisotoida"
+                    type="date"
+                    id="ngaysinh"
+                    required
+                    v-model="student.ngaysinh"
                     :class="classText"
                     :disabled="isNotEdit"
                   >
@@ -91,18 +65,35 @@
               <div class="form-group row">
                 <label class="col-sm-3"></label>
                 <label
-                  for="year-add"
+                  for="sdt"
                   class="col-sm-2 col-form-label"
-                >Năm Học</label>
+                >SDT</label>
                 <div class="col-sm-4">
                   <input
-                    type="text"
-                    id="year-add"
+                    type="tel"
+                    id="sdt"
                     required
-                    v-model="classes.namhoc"
+                    v-model="student.sdt"
                     :class="classText"
                     :disabled="isNotEdit"
                   >
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label class="col-sm-3"></label>
+                <label
+                  for="diachi"
+                  class="col-sm-2 col-form-label"
+                >Địa Chỉ</label>
+                <div class="col-sm-4">
+                  <textarea
+                    class="form-control noresize"
+                    rows="4"
+                    id="diachi"
+                    v-model="student.diachi"
+                    :disabled="isNotEdit"
+                  ></textarea>
                 </div>
               </div>
 
@@ -118,19 +109,19 @@
                   >Chỉnh Sửa</button><button
                     type="button"
                     class="btn btn-primary mr-3 custom-width-btn"
-                    @click="BackListClass"
+                    @click="BackListStudent"
                     v-if="isNotEdit"
                   >Quay Lại</button>
                   <button
                     type="button"
                     class="btn btn-primary mr-3 custom-width-btn"
-                    @click="EditClass"
+                    @click="EditStudent"
                     v-if="!isNotEdit"
                   >Thay Đổi</button>
                   <button
                     type="button"
                     class="btn btn-primary mr-3 custom-width-btn"
-                    @click="resetDataEditClass"
+                    @click="resetDataEditStudent"
                     v-if="!isNotEdit"
                   >Nhập Lại</button>
                   <button
@@ -154,59 +145,51 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   data() {
     return {
-      classes: {
-        malop: "",
-        tenlop: "",
-        makhoi: 0,
-        tenkhoi: "",
-        giaovienchunhiem: "",
+      student: {
+        mahocsinh: "",
         hoten: "",
-        sisotoida: 0,
-        namhoc: ""
+        ngaysinh: "",
+        diachi: "",
+        gioitinh: 0,
+        sdt: ""
       },
       classText: "form-control-plaintext",
       isNotEdit: true
     };
   },
   computed: {
-    ...mapGetters([
-      "getCodeClass",
-      "listLevelClass",
-      "dataAccount",
-      "getDetailClass",
-      "selectClass"
-    ])
+    ...mapGetters(["getCodeStudent", "getDetailStudent", "selectStudent"])
   },
   mounted() {
-    if (this.getDetailClass.malop != undefined) {
-      this.resetDataEditClass();
-      this.getLevelClass();
-      this.fetchAllAccount();
+    if (this.getDetailStudent.mahocsinh != undefined) {
+      this.resetDataEditStudent();
     } else {
-      this.$router.push("/classroom");
+      this.$router.push("/student");
     }
   },
   destroyed() {
-    this.resetDetailClass().then(res => console.log(res));
+    this.resetDetailStudent();
   },
   methods: {
     ...mapActions([
-      "editClass",
-      "getInfoDetailClass",
-      "resetDetailClass",
-      "getLevelClass",
+      "editStudent",
+      "getInfoDetailStudent",
+      "resetDetailStudent",
+      "getLevelStudent",
       "fetchAllAccount"
     ]),
-    EditClass() {
-      this.editClass(this.classes).then(req => {
+    EditStudent() {
+      this.editStudent(this.student).then(req => {
         if (req) {
           alert("thay doi thanh cong!!!");
+          this.resetDataEditStudent();
           this.setNotEdit();
+          this.$router.push("/student");
         }
       });
     },
-    BackListClass() {
-      this.$router.push("/classroom");
+    BackListStudent() {
+      this.$router.push("/student");
     },
     setEdit() {
       this.isNotEdit = false;
@@ -216,16 +199,14 @@ export default {
       this.isNotEdit = true;
       this.classText = "form-control-plaintext";
     },
-    resetDataEditClass() {
+    resetDataEditStudent() {
       const that = this;
-      that.classes.malop = that.getDetailClass.malop;
-      that.classes.tenlop = that.getDetailClass.tenlop;
-      that.classes.makhoi = that.getDetailClass.makhoi;
-      that.classes.tenkhoi = that.getDetailClass.tenkhoi;
-      that.classes.sisotoida = that.getDetailClass.sisotoida;
-      that.classes.giaovienchunhiem = that.getDetailClass.giaovienchunhiem;
-      that.classes.hoten = that.getDetailClass.hoten;
-      that.classes.namhoc = that.getDetailClass.namhoc;
+      that.student.mahocsinh = that.getDetailStudent.mahocsinh;
+      that.student.hoten = that.getDetailStudent.hoten;
+      that.student.ngaysinh = that.getDetailStudent.ngaysinh;
+      that.student.diachi = that.getDetailStudent.diachi;
+      that.student.gioitinh = that.getDetailStudent.gioitinh;
+      that.student.sdt = that.getDetailStudent.sdt;
     }
   }
 };

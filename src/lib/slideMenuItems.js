@@ -24,7 +24,7 @@ module.exports = [
     icon: "fa fa-circle-o",
     name: "Học Sinh",
     router: {
-      name: "student"
+      name: "student/list"
     }
   },
   {

@@ -187,7 +187,7 @@ export default {
     }
   },
   destroyed() {
-    this.resetDetailClass().then(res => console.log(res));
+    this.resetDetailClass();
   },
   methods: {
     ...mapActions([
@@ -202,6 +202,7 @@ export default {
         if (req) {
           alert("thay doi thanh cong!!!");
           this.setNotEdit();
+          this.$router.push("/classroom");
         }
       });
     },

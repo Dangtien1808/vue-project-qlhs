@@ -8,30 +8,37 @@
       <div class="table-responsive">
         <div id="toolbar">
           <button
-            id="detailClass"
-            class="btn btn-info mr-3"
-            @click="detailClass"
+            id="addStudent"
+            class="btn btn-success mr-3"
+            @click="addStudent"
+          >
+            <i class="glyphicon glyphicon-remove"></i>Thêm Học Sinh
+          </button>
+          <button
+            id="detailStudent"
+            class="btn btn-warning mr-3"
+            @click="detailStudent"
             disabled
           >
-            <i class="glyphicon glyphicon-remove"></i> Chi Tiết
+            <i class="glyphicon glyphicon-remove"></i> Chi Tiết Thông Tin Học Sinh
           </button>
 
           <button
-            id="statisticalClass"
+            id="statisticalStudent"
             class="btn btn-info mr-3"
-            @click="statisticalClass"
+            @click="statisticalStudent"
             disabled
           >
-            <i class="glyphicon glyphicon-remove"></i> Thành Tích của Lớp
+            <i class="glyphicon glyphicon-remove"></i> Bảng Điểm Học Sinh
           </button>
 
           <button
-            id="removeClass"
+            id="removeStudent"
             class="btn btn-danger mr-3"
-            @click="removeClass"
+            @click="removeStudent"
             disabled
           >
-            <i class="glyphicon glyphicon-remove"></i> Xóa
+            <i class="glyphicon glyphicon-remove"></i> Xóa Học Sinh
           </button>
         </div>
         <table id="table1"></table>
@@ -43,7 +50,7 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-import dataHeaderClass from "../../lib/dataHeaderClass";
+import dataHeaderStudent from "../../lib/dataHeaderStudent";
 
 export default {
   data() {
@@ -52,10 +59,10 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["dataClass"])
+    ...mapGetters(["dataStudent"])
   },
   mounted() {
-    this.fetchAllClass()
+    this.fetchStudent()
       .then(res => {
         if (res) {
           this.initTable();
@@ -65,73 +72,76 @@ export default {
   },
   methods: {
     ...mapActions([
-      "fetchAllClass",
-      "deleteClass",
-      "setCheckBoxClass",
-      "setCodeSelectClass",
-      "getInfoDetailClass"
+      "fetchStudent",
+      "deleteStudents",
+      "setCheckBoxStudent",
+      "setCodeSelectStudent",
+      "getInfoDetailStudent"
     ]),
-    detailClass() {
+    addStudent() {
+      this.$router.push("/student/add");
+    },
+    detailStudent() {
       let ids = $.map($("#table1").bootstrapTable("getSelections"), function(
         row
       ) {
-        return row.malop;
+        return row.mahocsinh;
       });
       if (ids != null) {
         let id = ids;
-        this.getInfoDetailClass(id[0]).then(res => {
+        this.getInfoDetailStudent(id[0]).then(res => {
           if (res) {
-            this.$router.push("/classroom/detail");
+            this.$router.push("/student/detail");
           }
         });
       }
     },
-    statisticalClass() {
+    statisticalStudent() {
       let ids = $.map($("#table1").bootstrapTable("getSelections"), function(
         row
       ) {
-        return row.malop;
+        return row.mahocsinh;
       });
       if (ids != null) {
         let id = ids;
-        this.getInfoDetailClass(id[0]).then(res => {
+        this.getInfoDetailStudent(id[0]).then(res => {
           if (res) {
-            this.$router.push("/classroom/statistical");
+            this.$router.push("/student/statistical");
           }
         });
       }
     },
-    removeClass() {
+    removeStudent() {
       let ids = $.map($("#table1").bootstrapTable("getSelections"), function(
         row
       ) {
-        return row.malop;
+        return row.mahocsinh;
       });
       if (ids != null) {
         let id = ids;
-        this.deleteClass(id[0])
+        this.deleteStudents(id[0])
           .then(res => {
             if (res) {
-              this.fetchAllClass()
+              this.fetchStudent()
                 .then(res => {
                   if (res) {
                     $("#table1").bootstrapTable("remove", {
-                      field: "malop",
+                      field: "mahocsinh",
                       values: id
                     });
-                    $("#removeClass").prop(
+                    $("#removeStudent").prop(
                       "disabled",
                       !$("#table1").bootstrapTable("getSelections").length
                     );
-                    $("#detailClass").prop(
+                    $("#detailStudent").prop(
                       "disabled",
                       !$("#table1").bootstrapTable("getSelections").length
                     );
-                    $("#statisticalClass").prop(
+                    $("#statisticalStudent").prop(
                       "disabled",
                       !$("#table1").bootstrapTable("getSelections").length
                     );
-                    this.setCheckBoxClass(false);
+                    this.setCheckBoxStudent(false);
                     ids = null;
                     alert("Thanh Cong!!!");
                   }
@@ -145,8 +155,8 @@ export default {
     initTable() {
       let that = this;
       $("#table1").bootstrapTable({
-        columns: [...dataHeaderClass.column],
-        data: [...that.dataClass],
+        columns: [...dataHeaderStudent.column],
+        data: [...that.dataStudent],
         classes: "table table-hover",
         pagination: true,
         pageSize: 5,
@@ -165,25 +175,24 @@ export default {
           return row.malop;
         });
         if (ids.length != 0) {
-          that.setCodeSelectClass(ids[0]);
-          that.getInfoDetailClass(ids[0]).then(res => console.log(res));
+          that.setCodeSelectStudent(ids[0]);
+          that.getInfoDetailStudent(ids[0]).then(res => console.log(res));
         } else {
-          that.setCodeSelectClass(0);
+          that.setCodeSelectStudent(0);
         }
-        // that.getInfoDetailClass(ids[0]).then(res => console.log(res));
-        that.setCheckBoxClass(
+        that.setCheckBoxStudent(
           $("#table1").bootstrapTable("getSelections").length
         );
 
-        $("#removeClass").prop(
+        $("#removeStudent").prop(
           "disabled",
           !$("#table1").bootstrapTable("getSelections").length
         );
-        $("#detailClass").prop(
+        $("#detailStudent").prop(
           "disabled",
           !$("#table1").bootstrapTable("getSelections").length
         );
-        $("#statisticalClass").prop(
+        $("#statisticalStudent").prop(
           "disabled",
           !$("#table1").bootstrapTable("getSelections").length
         );
@@ -191,7 +200,7 @@ export default {
       $("#table1").on("refresh.bs.table", () => {
         $("#table1").bootstrapTable("resetSearch");
       });
-      this.setCheckBoxClass(false);
+      this.setCheckBoxStudent(false);
     }
   }
 };
