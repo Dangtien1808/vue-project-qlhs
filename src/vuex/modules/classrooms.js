@@ -3,11 +3,16 @@ import { services } from "../api";
 import dataClass from "../../lib/dataHeaderClass";
 const state = {
   main: { column: dataClass.column, listItem: [], isSelect: false },
+  listStudentClass: [],
+  isSelectStudent: false,
   codeClass: 1,
   detailClass: {}
 };
 
 const getters = {
+  getStudentsClass(state) {
+    return state.listStudentClass;
+  },
   headerDataClass(state) {
     return state.main.column;
   },
@@ -69,6 +74,13 @@ const actions = {
       ctx.commit(types.FETCH_CHECKED_CLASSROOMS, true);
     }
   },
+  setCheckBoxStudentClass(ctx, flag) {
+    if (flag) {
+      ctx.commit(types.FETCH_UNCHECK_STUDENT_CLASSROOMS, false);
+    } else {
+      ctx.commit(types.FETCH_CHECKED_STUDENT_CLASSROOMS, true);
+    }
+  },
   setCodeSelectClass(ctx, id) {
     ctx.commit(types.FETCH_CODE_CLASS, id);
   },
@@ -111,9 +123,49 @@ const actions = {
         });
     });
   },
+  getListStudentClass(ctx, id) {
+    return new Promise(resolve => {
+      services.classrooms
+        .getListStuden(id)
+        .then(res => {
+          if (res.status == 200) {
+            ctx.commit(types.FETCH_LIST_STUDENT_CLASS, res.data);
+            resolve(true);
+          } else {
+            resolve(false);
+          }
+        })
+        .catch(error => {
+          resolve(false);
+          console.log(error);
+        });
+    });
+  },
   editClass(ctx, data) {
     return new Promise(resolve => {
       services.classrooms.editClass(data).then(res => {
+        if (res.status == 200) {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      });
+    });
+  },
+  AddStudentClass(ctx, data) {
+    return new Promise(resolve => {
+      services.classrooms.AddStudent(data).then(res => {
+        if (res.status == 200) {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      });
+    });
+  },
+  deleteStudentClass(ctx, data) {
+    return new Promise(resolve => {
+      services.classrooms.deleteStudent(data).then(res => {
         if (res.status == 200) {
           resolve(true);
         } else {
@@ -134,8 +186,17 @@ const mutations = {
   [types.FETCH_CHECKED_CLASSROOMS](state, flag) {
     state.main.isSelect = flag;
   },
+  [types.FETCH_UNCHECK_STUDENT_CLASSROOMS](state, flag) {
+    state.isSelectStudent = flag;
+  },
+  [types.FETCH_CHECKED_STUDENT_CLASSROOMS](state, flag) {
+    state.isSelectStudent = flag;
+  },
   [types.FETCH_DETAIL_CLASS](state, data) {
     state.detailClass = data[0];
+  },
+  [types.FETCH_LIST_STUDENT_CLASS](state, data) {
+    state.listStudentClass = data;
   },
   [types.FETCH_RESET_DETAIL_CLASSROOMS](state) {
     state.detailClass = {};

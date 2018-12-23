@@ -173,8 +173,7 @@ export default {
       "getCodeClass",
       "listLevelClass",
       "dataAccount",
-      "getDetailClass",
-      "selectClass"
+      "getDetailClass"
     ])
   },
   mounted() {

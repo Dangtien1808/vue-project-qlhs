@@ -19,6 +19,12 @@ export default {
       .then(response => Promise.resolve(response))
       .catch(error => Promise.reject(error));
   },
+  getListStuden(malop) {
+    return axios
+      .get("http://localhost:3000/class/" + malop + "/students")
+      .then(response => Promise.resolve(response))
+      .catch(error => Promise.reject(error));
+  },
   getDetail(malop) {
     return axios
       .get("http://localhost:3000/class/info/" + malop)
@@ -29,6 +35,18 @@ export default {
   editClass(data) {
     return axios
       .post("http://localhost:3000/class/changedetail", data)
+      .then(response => Promise.resolve(response))
+      .catch(error => Promise.reject(error));
+  },
+  AddStudent(data) {
+    return axios
+      .post("http://localhost:3000/studentclass/add", data)
+      .then(response => Promise.resolve(response))
+      .catch(error => Promise.reject(error));
+  },
+  deleteStudent(data) {
+    return axios
+      .post("http://localhost:3000/studentclass/delete", data)
       .then(response => Promise.resolve(response))
       .catch(error => Promise.reject(error));
   }

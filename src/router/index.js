@@ -6,6 +6,7 @@ import Login from "../views/Login.vue";
 import ListClassroom from "../components/classrooms/List.vue";
 import DetailClassroom from "../components/classrooms/Detail.vue";
 import AddClassroom from "../components/classrooms/Add.vue";
+import AddStudentClassroom from "../components/classrooms/AddStudent.vue";
 import StatisticalClassroom from "../components/classrooms/Statistical.vue";
 import ListStudent from "../components/students/List.vue";
 import DetailStudent from "../components/students/Detail.vue";
@@ -68,6 +69,14 @@ var router = new Router({
           path: "add",
           name: "classroom/add",
           component: AddClassroom,
+          meta: {
+            requiresAuth: true
+          }
+        },
+        {
+          path: "addstudent",
+          name: "classroom/addstudent",
+          component: AddStudentClassroom,
           meta: {
             requiresAuth: true
           }

@@ -14,14 +14,6 @@
           >
             <i class="glyphicon glyphicon-remove"></i>Thêm Lớp Mới
           </button>
-          <button
-            id="detailClass"
-            class="btn btn-warning mr-3"
-            @click="detailClass"
-            disabled
-          >
-            <i class="glyphicon glyphicon-remove"></i> Chi Tiết Thông Tin Lớp
-          </button>
 
           <button
             id="statisticalClass"
@@ -29,7 +21,16 @@
             @click="statisticalClass"
             disabled
           >
-            <i class="glyphicon glyphicon-remove"></i> Thành Tích Học Tập của Lớp
+            <i class="glyphicon glyphicon-remove"></i> Danh Sách Học Sinh Của Lớp
+          </button>
+
+          <button
+            id="detailClass"
+            class="btn btn-warning mr-3"
+            @click="detailClass"
+            disabled
+          >
+            <i class="glyphicon glyphicon-remove"></i> Thông Tin Lớp Học
           </button>
 
           <button
@@ -38,7 +39,7 @@
             @click="removeClass"
             disabled
           >
-            <i class="glyphicon glyphicon-remove"></i> Xóa Lớp
+            <i class="glyphicon glyphicon-remove"></i> Xóa Lớp Học
           </button>
         </div>
         <table id="table1"></table>
@@ -206,6 +207,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-</style>

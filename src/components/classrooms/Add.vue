@@ -1,7 +1,7 @@
 <template>
   <div class="box box-info">
     <div class="box-header with-border text-center">
-      <h2 class="box-title">Thêm Tài Khoản Giáo Viên</h2>
+      <h2 class="box-title">Thêm Lớp Học</h2>
     </div>
     <div class="box-body">
       <div class="span12">
