@@ -2,7 +2,9 @@ import * as types from "../mutation-types";
 import { services } from "../api";
 import dataClass from "../../lib/dataHeaderClass";
 const state = {
-  main: { column: dataClass.column, listItem: [], isSelect: false }
+  main: { column: dataClass.column, listItem: [], isSelect: false },
+  codeClass: 1,
+  detailClass: {}
 };
 
 const getters = {
@@ -14,6 +16,12 @@ const getters = {
   },
   selectClass(state) {
     return state.main.isSelect;
+  },
+  getCodeClass(state) {
+    return state.codeClass;
+  },
+  getDetailClass(state) {
+    return state.detailClass;
   }
 };
 
@@ -51,37 +59,69 @@ const actions = {
         });
     });
   },
+  resetDetailClass(ctx) {
+    ctx.commit(types.FETCH_RESET_DETAIL_CLASSROOMS);
+  },
   setCheckBoxClass(ctx, flag) {
     if (flag) {
       ctx.commit(types.FETCH_UNCHECK_CLASSROOMS, false);
     } else {
       ctx.commit(types.FETCH_CHECKED_CLASSROOMS, true);
     }
+  },
+  setCodeSelectClass(ctx, id) {
+    ctx.commit(types.FETCH_CODE_CLASS, id);
+  },
+  AddClassroom(ctx, data) {
+    return new Promise((resolve, reject) => {
+      services.classrooms
+        .addClass(data)
+        .then(res => {
+          if (res.status === 201) {
+            if (res.data.insertId) {
+              resolve(true);
+            } else {
+              resolve(false);
+            }
+          } else {
+            resolve(false);
+          }
+        })
+        .catch(error => {
+          reject(false);
+          console.log(error);
+        });
+    });
+  },
+  getInfoDetailClass(ctx, id) {
+    return new Promise(resolve => {
+      services.classrooms
+        .getDetail(id)
+        .then(res => {
+          if (res.status == 200) {
+            ctx.commit(types.FETCH_DETAIL_CLASS, res.data);
+            resolve(true);
+          } else {
+            resolve(false);
+          }
+        })
+        .catch(error => {
+          resolve(false);
+          console.log(error);
+        });
+    });
+  },
+  editClass(ctx, data) {
+    return new Promise(resolve => {
+      services.classrooms.editClass(data).then(res => {
+        if (res.status == 200) {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      });
+    });
   }
-  // addAccount(ctx, data) {
-  //   return new Promise((resolve, reject) => {
-  //     services.teachers
-  //       .addAccount(data)
-  //       .then(res => {
-  //         console.log(res.status);
-  //         if (res.status === 201) {
-  //           console.log(res.data);
-  //           if (res.data.taikhoan) {
-  //             console.log(res.data.taikhoan);
-  //             resolve(true);
-  //           } else {
-  //             resolve(false);
-  //           }
-  //         } else {
-  //           resolve(false);
-  //         }
-  //       })
-  //       .catch(error => {
-  //         reject(false);
-  //         console.log(error);
-  //       });
-  //   });
-  // }
 };
 
 const mutations = {
@@ -93,6 +133,15 @@ const mutations = {
   },
   [types.FETCH_CHECKED_CLASSROOMS](state, flag) {
     state.main.isSelect = flag;
+  },
+  [types.FETCH_DETAIL_CLASS](state, data) {
+    state.detailClass = data[0];
+  },
+  [types.FETCH_RESET_DETAIL_CLASSROOMS](state) {
+    state.detailClass = {};
+  },
+  [types.FETCH_CODE_CLASS](state, id) {
+    state.codeClass = id;
   }
 };
 

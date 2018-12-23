@@ -7,7 +7,7 @@ const state = {
 const actions = {
   getLevelClass(ctx) {
     return new Promise((resolve, reject) => {
-      services.subjects
+      services.level_class
         .getAll()
         .then(res => {
           resolve(true);

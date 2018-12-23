@@ -1,7 +1,7 @@
 <template>
   <div class="box box-info">
     <div class="box-header with-border text-center">
-      <h2 class="box-title">Thông Tin Chi Tiết Tài Khoản</h2>
+      <h2 class="box-title">Thông Tin Lớp Học</h2>
     </div>
     <div class="box-body">
       <div class="span12">
@@ -11,68 +11,14 @@
               <div class="form-group row">
                 <label class="col-sm-3"></label>
                 <label
-                  for="username-edit"
+                  for="classname-detail"
                   class="col-sm-2 col-form-label"
-                >Tài Khoản</label>
+                >Tên Lớp</label>
                 <div class="col-sm-4">
                   <input
                     type="text"
-                    id="username-edit"
-                    required
-                    v-model="user.username"
-                    :class="classText"
-                    :disabled="isNotEdit"
-                  >
-                </div>
-              </div>
-              <div class="form-group row">
-                <label class="col-sm-3"></label>
-                <label
-                  for="password-edit"
-                  class="col-sm-2 col-form-label"
-                >Mật Khẩu</label>
-                <div class="col-sm-4">
-                  <input
-                    type="password"
-                    id="password-edit"
-                    placeholder="******"
-                    required
-                    v-model="user.password"
-                    :class="classText"
-                    :disabled="isNotEdit"
-                  >
-                </div>
-              </div>
-              <hr>
-              <div class="form-group row">
-                <label class="col-sm-3"></label>
-                <label
-                  class="col-sm-2 col-form-label"
-                  for="member-name-edit"
-                >Họ Tên</label>
-                <div class="col-sm-4">
-                  <input
-                    type="text"
-                    id="member-name-edit"
-                    required
-                    v-model="user.membername"
-                    :class="classText"
-                    :disabled="isNotEdit"
-                  >
-                </div>
-              </div>
-              <div class="form-group row">
-                <label class="col-sm-3"></label>
-                <label
-                  for="email-edit"
-                  class="col-sm-2 col-form-label"
-                >Thư Điện Tử</label>
-                <div class="col-sm-4">
-                  <input
-                    type="email"
-                    id="email-edit"
-                    required
-                    v-model="user.email"
+                    id="classname-detail"
+                    v-model="classes.tenlop"
                     :class="classText"
                     :disabled="isNotEdit"
                   >
@@ -82,74 +28,84 @@
               <div class="form-group row">
                 <label class="col-sm-3"></label>
                 <label
-                  for="bithday-edit"
+                  for="level-class-detail"
                   class="col-sm-2 col-form-label"
-                >Ngày Sinh</label>
-                <div class="col-sm-4">
-                  <input
-                    type="date"
-                    id="bithday-edit"
-                    required
-                    v-model="user.bithday"
-                    :class="classText"
-                    :disabled="isNotEdit"
-                  >
-                </div>
-              </div>
-              <div class="form-group row">
-                <label class="col-sm-3"></label>
-                <label
-                  for="tellphone-edit"
-                  class="col-sm-2 col-form-label"
-                >SDT</label>
-                <div class="col-sm-4">
-                  <input
-                    type="tel"
-                    id="tellphone-edit"
-                    required
-                    v-model="user.tellphone"
-                    :class="classText"
-                    :disabled="isNotEdit"
-                  >
-                </div>
-              </div>
-              <div class="form-group row">
-                <label class="col-sm-3"></label>
-                <label
-                  for="address-edit"
-                  class="col-sm-2 col-form-label"
-                >Địa Chỉ</label>
-                <div class="col-sm-4">
-                  <textarea
-                    class="form-control noresize"
-                    rows="4"
-                    id="address-edit"
-                    model="user.address"
-                    :disabled="isNotEdit"
-                  ></textarea>
-                </div>
-              </div>
-              <hr>
-              <div class="form-group row">
-                <label class="col-sm-3"></label>
-                <label
-                  for="technique-edit"
-                  class="col-sm-2 col-form-label"
-                >Môn Học Phụ Trách</label>
+                >Khối</label>
                 <div class="col-sm-4">
                   <select
                     :class="classText"
-                    id="technique-edit"
+                    id="level-class-detail"
                     :disabled="isNotEdit"
-                    required
+                    v-model="classes.makhoi"
                   >
-                    <option>Toán</option>
-                    <option>Lý</option>
-                    <option>Hóa</option>
-                    <option>Anh Văn</option>
+                    <option
+                      v-for="levelClass in listLevelClass"
+                      :key="levelClass.makhoi"
+                      :value="levelClass.makhoi"
+                    >{{levelClass.tenkhoi}}</option>
                   </select>
                 </div>
               </div>
+
+              <div class="form-group row">
+                <label class="col-sm-3"></label>
+                <label
+                  for="teacher-detail"
+                  class="col-sm-2 col-form-label"
+                >Giáo Viên Chủ Nhiệm</label>
+                <div class="col-sm-4">
+                  <select
+                    :class="classText"
+                    id="teacher-detail"
+                    :disabled="isNotEdit"
+                    v-model="classes.giaovienchunhiem"
+                    required
+                  >
+                    <option
+                      v-for="teacher in dataAccount"
+                      :key="teacher.taikhoan"
+                      :value="teacher.taikhoan"
+                    >{{teacher.hoten}}</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label class="col-sm-3"></label>
+                <label
+                  for="Siso-add"
+                  class="col-sm-2 col-form-label"
+                >Sí Số Tối Đa</label>
+                <div class="col-sm-4">
+                  <input
+                    type="number"
+                    id="Siso-add"
+                    placeholder="0123456789"
+                    v-model="classes.sisotoida"
+                    :class="classText"
+                    :disabled="isNotEdit"
+                  >
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label class="col-sm-3"></label>
+                <label
+                  for="year-add"
+                  class="col-sm-2 col-form-label"
+                >Năm Học</label>
+                <div class="col-sm-4">
+                  <input
+                    type="text"
+                    id="year-add"
+                    required
+                    v-model="classes.namhoc"
+                    :class="classText"
+                    :disabled="isNotEdit"
+                  >
+                </div>
+              </div>
+
               <hr>
               <div class="form-group row">
                 <label class="col-sm-4"></label>
@@ -159,22 +115,28 @@
                     class="btn btn-primary mr-3 custom-width-btn"
                     @click="setEdit"
                     v-if="isNotEdit"
-                  >Chỉnh Sửa</button>
+                  >Chỉnh Sửa</button><button
+                    type="button"
+                    class="btn btn-primary mr-3 custom-width-btn"
+                    @click="BackListClass"
+                    v-if="isNotEdit"
+                  >Quay Lại</button>
                   <button
                     type="button"
                     class="btn btn-primary mr-3 custom-width-btn"
-                    @click="EditUser"
+                    @click="EditClass"
                     v-if="!isNotEdit"
                   >Thay Đổi</button>
                   <button
                     type="button"
                     class="btn btn-primary mr-3 custom-width-btn"
-                    @click="resetDataEditUser"
+                    @click="resetDataEditClass"
                     v-if="!isNotEdit"
                   >Nhập Lại</button>
                   <button
                     type="button"
                     class="btn btn-primary mr-3 custom-width-btn"
+                    v-if="!isNotEdit"
                     @click="setNotEdit"
                   >Hủy</button>
                 </div>
@@ -188,30 +150,64 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
 export default {
   data() {
     return {
-      user: {
-        membername: "Đặng Văn Tiến",
-        username: "vantien",
-        password: "vantien",
-        email: "dangvantien1808@gmail.com",
-        bithday: "2018-12-17",
-        tellphone: "0123456789",
-        address:
-          "123/3 ấp Mường Mu, xã Mường Thanh, Huyện Mường Chu, tỉnh Mường Mường A"
+      classes: {
+        malop: "",
+        tenlop: "",
+        makhoi: 0,
+        tenkhoi: "",
+        giaovienchunhiem: "",
+        hoten: "",
+        sisotoida: 0,
+        namhoc: ""
       },
       classText: "form-control-plaintext",
       isNotEdit: true
     };
   },
-  computed: {},
-  mounted() {},
+  computed: {
+    ...mapGetters([
+      "getCodeClass",
+      "listLevelClass",
+      "dataAccount",
+      "getDetailClass",
+      "selectClass"
+    ])
+  },
+  mounted() {
+    if (this.getDetailClass.malop != undefined) {
+      this.resetDataEditClass();
+      this.getLevelClass();
+      this.fetchAllAccount();
+    } else {
+      this.$router.push("/classroom");
+    }
+  },
+  destroyed() {
+    this.resetDetailClass().then(res => console.log(res));
+  },
   methods: {
-    EditUser() {
-      console.log(2);
+    ...mapActions([
+      "editClass",
+      "getInfoDetailClass",
+      "resetDetailClass",
+      "getLevelClass",
+      "fetchAllAccount"
+    ]),
+    EditClass() {
+      this.editClass(this.classes).then(req => {
+        if (req) {
+          alert("thay doi thanh cong!!!");
+          this.setNotEdit();
+        }
+      });
     },
-
+    BackListClass() {
+      this.$router.push("/classroom");
+    },
     setEdit() {
       this.isNotEdit = false;
       this.classText = "form-control form-control-plaintext";
@@ -220,7 +216,17 @@ export default {
       this.isNotEdit = true;
       this.classText = "form-control-plaintext";
     },
-    resetDataEditUser() {}
+    resetDataEditClass() {
+      const that = this;
+      that.classes.malop = that.getDetailClass.malop;
+      that.classes.tenlop = that.getDetailClass.tenlop;
+      that.classes.makhoi = that.getDetailClass.makhoi;
+      that.classes.tenkhoi = that.getDetailClass.tenkhoi;
+      that.classes.sisotoida = that.getDetailClass.sisotoida;
+      that.classes.giaovienchunhiem = that.getDetailClass.giaovienchunhiem;
+      that.classes.hoten = that.getDetailClass.hoten;
+      that.classes.namhoc = that.getDetailClass.namhoc;
+    }
   }
 };
 </script>

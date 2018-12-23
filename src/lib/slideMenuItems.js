@@ -17,7 +17,7 @@ module.exports = [
     icon: "fa fa-th",
     name: "Lớp Học",
     router: {
-      name: "classroom"
+      name: "classroom/list"
     }
   },
   {

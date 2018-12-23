@@ -78,8 +78,8 @@ export default {
     initTable() {
       let that = this;
       $("#table").bootstrapTable({
-        columns: that.headerDataAccount,
-        data: that.dataAccount,
+        columns: [...that.headerDataAccount],
+        data: [...that.dataAccount],
         classes: "table table-hover",
         pagination: true,
         pageSize: 5,

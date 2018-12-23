@@ -1,4 +1,5 @@
 <template>
+
   <div class="box box-info">
     <div class="box-header with-border text-center">
       <h2 class="box-title">Danh Sách Lớp Học</h2>
@@ -7,18 +8,37 @@
       <div class="table-responsive">
         <div id="toolbar">
           <button
-            id="remove1"
+            id="detailClass"
+            class="btn btn-info mr-3"
+            @click="detailClass"
+            disabled
+          >
+            <i class="glyphicon glyphicon-remove"></i> Chi Tiết
+          </button>
+
+          <button
+            id="statisticalClass"
+            class="btn btn-info mr-3"
+            @click="statisticalClass"
+            disabled
+          >
+            <i class="glyphicon glyphicon-remove"></i> Thành Tích của Lớp
+          </button>
+
+          <button
+            id="removeClass"
             class="btn btn-danger mr-3"
             @click="removeClass"
             disabled
           >
-            <i class="glyphicon glyphicon-remove"></i> Remove
+            <i class="glyphicon glyphicon-remove"></i> Xóa
           </button>
         </div>
         <table id="table1"></table>
       </div>
     </div>
   </div>
+
 </template>
 
 <script>
@@ -44,14 +64,49 @@ export default {
       .catch(error => console.log(error));
   },
   methods: {
-    ...mapActions(["fetchAllClass", "deleteClass", "setCheckBoxClass"]),
+    ...mapActions([
+      "fetchAllClass",
+      "deleteClass",
+      "setCheckBoxClass",
+      "setCodeSelectClass",
+      "getInfoDetailClass"
+    ]),
+    detailClass() {
+      let ids = $.map($("#table1").bootstrapTable("getSelections"), function(
+        row
+      ) {
+        return row.malop;
+      });
+      if (ids != null) {
+        let id = ids;
+        this.getInfoDetailClass(id[0]).then(res => {
+          if (res) {
+            this.$router.push("/classroom/detail");
+          }
+        });
+      }
+    },
+    statisticalClass() {
+      let ids = $.map($("#table1").bootstrapTable("getSelections"), function(
+        row
+      ) {
+        return row.malop;
+      });
+      if (ids != null) {
+        let id = ids;
+        this.getInfoDetailClass(id[0]).then(res => {
+          if (res) {
+            this.$router.push("/classroom/statistical");
+          }
+        });
+      }
+    },
     removeClass() {
       let ids = $.map($("#table1").bootstrapTable("getSelections"), function(
         row
       ) {
         return row.malop;
       });
-      console.log(ids);
       if (ids != null) {
         let id = ids;
         this.deleteClass(id[0])
@@ -64,10 +119,19 @@ export default {
                       field: "malop",
                       values: id
                     });
-                    $("#remove1").prop(
+                    $("#removeClass").prop(
                       "disabled",
                       !$("#table1").bootstrapTable("getSelections").length
                     );
+                    $("#detailClass").prop(
+                      "disabled",
+                      !$("#table1").bootstrapTable("getSelections").length
+                    );
+                    $("#statisticalClass").prop(
+                      "disabled",
+                      !$("#table1").bootstrapTable("getSelections").length
+                    );
+                    this.setCheckBoxClass(false);
                     ids = null;
                     alert("Thanh Cong!!!");
                   }
@@ -81,8 +145,8 @@ export default {
     initTable() {
       let that = this;
       $("#table1").bootstrapTable({
-        columns: dataHeaderClass.column,
-        data: that.dataClass,
+        columns: [...dataHeaderClass.column],
+        data: [...that.dataClass],
         classes: "table table-hover",
         pagination: true,
         pageSize: 5,
@@ -90,14 +154,36 @@ export default {
         search: true,
         singleSelect: true,
         showRefresh: true,
-        toolbar: "#toolbar"
+        toolbar: "#toolbar",
+        sortName: "namhoc",
+        sortOrder: "desc"
       });
       $("#table1").on("check.bs.table uncheck.bs.table ", () => {
+        let ids = $.map($("#table1").bootstrapTable("getSelections"), function(
+          row
+        ) {
+          return row.malop;
+        });
+        if (ids.length != 0) {
+          that.setCodeSelectClass(ids[0]);
+          that.getInfoDetailClass(ids[0]).then(res => console.log(res));
+        } else {
+          that.setCodeSelectClass(0);
+        }
+        // that.getInfoDetailClass(ids[0]).then(res => console.log(res));
         that.setCheckBoxClass(
           $("#table1").bootstrapTable("getSelections").length
         );
 
-        $("#remove1").prop(
+        $("#removeClass").prop(
+          "disabled",
+          !$("#table1").bootstrapTable("getSelections").length
+        );
+        $("#detailClass").prop(
+          "disabled",
+          !$("#table1").bootstrapTable("getSelections").length
+        );
+        $("#statisticalClass").prop(
           "disabled",
           !$("#table1").bootstrapTable("getSelections").length
         );
@@ -105,6 +191,7 @@ export default {
       $("#table1").on("refresh.bs.table", () => {
         $("#table1").bootstrapTable("resetSearch");
       });
+      this.setCheckBoxClass(false);
     }
   }
 };

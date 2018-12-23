@@ -3,7 +3,8 @@
     <div class="card-header h5">Quản Lý Lớp Học</div>
     <div class="card-body">
       <b-card no-body>
-        <b-tabs card>
+        <router-view></router-view>
+        <!-- <b-tabs card>
           <b-tab title="Danh Sách Lớp">
             <ListClass />
           </b-tab>
@@ -22,25 +23,25 @@
           >
             <StatisticalClass />
           </b-tab>
-        </b-tabs>
+        </b-tabs> -->
       </b-card>
     </div>
   </div>
 </template>
 
 <script>
-import AddClass from "../components/classrooms/Add.vue";
-import DetailClass from "../components/classrooms/Detail.vue";
-import ListClass from "../components/classrooms/List.vue";
-import StatisticalClass from "../components/classrooms/Statistical.vue";
+// import AddClass from "../components/classrooms/Add.vue";
+// import DetailClass from "../components/classrooms/Detail.vue";
+// import ListClass from "../components/classrooms/List.vue";
+// import StatisticalClass from "../components/classrooms/Statistical.vue";
 import { mapGetters } from "vuex";
 
 export default {
   components: {
-    AddClass,
-    DetailClass,
-    ListClass,
-    StatisticalClass
+    // AddClass,
+    // DetailClass,
+    // ListClass,
+    // StatisticalClass
   },
   computed: {
     ...mapGetters(["selectClass"])
