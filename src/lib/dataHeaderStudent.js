@@ -29,6 +29,7 @@ module.exports = {
       title: "Ngày Sinh",
       align: "center",
       valign: "middle",
+      searchable: false,
       width: "20%"
     },
     {
@@ -40,12 +41,14 @@ module.exports = {
           return "Nam";
         } else return "Nữ";
       },
+      searchable: false,
       width: "10%"
     },
     {
       field: "diachi",
       title: "Địa Chỉ",
       valign: "middle",
+      searchable: false,
       width: "35%"
     }
   ]

@@ -22,6 +22,7 @@ module.exports = {
       field: "ngaysinh",
       title: "Ngày Sinh",
       align: "center",
+      searchable: false,
       valign: "middle",
       width: "20%"
     },
@@ -34,7 +35,8 @@ module.exports = {
         if (value == 0) {
           return "Nam";
         } else return "Nữ";
-      }
+      },
+      searchable: false
     }
   ]
 };

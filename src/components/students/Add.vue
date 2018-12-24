@@ -1,7 +1,7 @@
 <template>
   <div class="box box-info">
     <div class="box-header with-border text-center">
-      <h2 class="box-title">Thêm Tài Khoản Giáo Viên</h2>
+      <h2 class="box-title">Thêm Học Sinh</h2>
     </div>
     <div class="box-body">
       <div class="span12">
@@ -11,17 +11,16 @@
               <div class="form-group row">
                 <label class="col-sm-3"></label>
                 <label
-                  for="classname-add"
+                  for="name-add"
                   class="col-sm-2 col-form-label"
-                >Tên Lớp</label>
+                >Tên Học Sinh</label>
                 <div class="col-sm-4">
                   <input
                     type="text"
                     class="form-control"
-                    id="classname-add"
-                    placeholder="10a1"
+                    id="name-add"
                     required
-                    v-model="classes.tenlop"
+                    v-model="student.hoten"
                   >
                 </div>
               </div>
@@ -29,78 +28,66 @@
               <div class="form-group row">
                 <label class="col-sm-3"></label>
                 <label
-                  for="level-class-add"
+                  for="date-add"
                   class="col-sm-2 col-form-label"
-                >Chọn Khối</label>
-                <div class="col-sm-4">
-                  <select
-                    class="form-control"
-                    id="level-class-add"
-                    v-model="classes.makhoi"
-                    required
-                  >
-                    <option
-                      v-for="levelClass in listLevelClass"
-                      :key="levelClass.makhoi"
-                      :value="levelClass.makhoi"
-                    >{{levelClass.tenkhoi}}</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="form-group row">
-                <label class="col-sm-3"></label>
-                <label
-                  for="teacher-add"
-                  class="col-sm-2 col-form-label"
-                >Giáo Viên Chủ Nhiệm</label>
-                <div class="col-sm-4">
-                  <select
-                    class="form-control"
-                    id="teacher-add"
-                    v-model="classes.giaovienchunhiem"
-                    required
-                  >
-                    <option
-                      v-for="teacher in dataAccount"
-                      :key="teacher.taikhoan"
-                      :value="teacher.taikhoan"
-                    >{{teacher.hoten}}</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="form-group row">
-                <label class="col-sm-3"></label>
-                <label
-                  for="Siso-add"
-                  class="col-sm-2 col-form-label"
-                >Sí Số Tối Đa</label>
+                >Ngày Sinh</label>
                 <div class="col-sm-4">
                   <input
-                    type="number"
-                    id="Siso-add"
+                    type="date"
+                    id="date-add"
                     class="form-control"
-                    placeholder="0123456789"
-                    v-model="classes.sisotoida"
+                    v-model="student.ngaysinh"
                   >
                 </div>
               </div>
-
               <div class="form-group row">
                 <label class="col-sm-3"></label>
                 <label
-                  for="year-add"
+                  for="sex-add"
                   class="col-sm-2 col-form-label"
-                >Năm Học</label>
+                >Giới Tính</label>
+                <div class="col-sm-4">
+                  <select
+                    class="form-control"
+                    id="sex-add"
+                    v-model="student.gioitinh"
+                    required
+                  >
+                    <option value="0">Nam</option>
+                    <option value="1">Nữ</option>
+                  </select>
+                </div>
+              </div>
+              <hr>
+              <div class="form-group row">
+                <label class="col-sm-3"></label>
+                <label
+                  for="phone-add"
+                  class="col-sm-2 col-form-label"
+                >SĐT</label>
                 <div class="col-sm-4">
                   <input
                     type="text"
+                    id="phone-add"
                     class="form-control"
-                    id="year-add"
-                    required
-                    v-model="classes.namhoc"
+                    v-model="student.sdt"
                   >
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label class="col-sm-3"></label>
+                <label
+                  for="address-add"
+                  class="col-sm-2 col-form-label"
+                >Địa Chỉ</label>
+                <div class="col-sm-4">
+                  <textarea
+                    class="form-control noresize"
+                    rows="4"
+                    id="address-add"
+                    v-model="student.diachi"
+                  ></textarea>
                 </div>
               </div>
 
@@ -110,13 +97,18 @@
                   <button
                     type="button"
                     class="btn btn-primary mr-3 custom-width-btn"
-                    @click="AddClassrooms"
-                  >Thêm Lớp</button>
+                    @click="AddStudents"
+                  >Thêm Học Sinh</button>
                   <button
                     type="button"
                     class="btn btn-primary mr-3 custom-width-btn"
-                    @click="resetDataClassroom"
+                    @click="resetDataStudent"
                   >Nhập Lại</button>
+                  <button
+                    type="button"
+                    class="btn btn-primary mr-3 custom-width-btn"
+                    @click="callBack"
+                  >Quay Lại</button>
                 </div>
               </div>
             </form>
@@ -128,43 +120,42 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapActions } from "vuex";
 
 export default {
   data() {
     return {
-      classes: {
-        tenlop: "",
-        makhoi: 0,
-        giaovienchunhiem: "",
-        sisotoida: 0,
-        namhoc: ""
+      student: {
+        hoten: "",
+        ngaysinh: "",
+        gioitinh: 0,
+        diachi: "",
+        sdt: ""
       }
     };
   },
-  computed: {
-    ...mapGetters(["listLevelClass", "dataAccount"])
-  },
-  mounted() {
-    this.getLevelClass().then(req => console.log(req));
-    this.fetchAllAccount().then(req => console.log(req));
-  },
+  computed: {},
+  mounted() {},
   methods: {
-    ...mapActions(["getLevelClass", "fetchAllAccount", "AddClassroom"]),
-    AddClassrooms() {
-      this.AddClassroom(this.classes).then(req => {
+    ...mapActions(["AddStudent"]),
+    callBack() {
+      this.$router.push("/student");
+    },
+    AddStudents() {
+      this.AddStudent(this.student).then(req => {
         if (req) {
-          alert("Them Lớp " + this.classes.tenlop + " Thanh Cong!!!");
+          alert("Them Học Sinh " + this.student.hoten + " Thanh Cong!!!");
+          this.$router.push("/student");
         }
       });
     },
-    resetDataClassroom() {
-      this.classes = {
-        tenlop: "",
-        makhoi: 0,
-        giaovienchunhiem: "",
-        sisotoida: 0,
-        namhoc: ""
+    resetDataStudent() {
+      this.student = {
+        hoten: "",
+        ngaysinh: "",
+        gioitinh: 0,
+        diachi: "",
+        sdt: ""
       };
     }
   }

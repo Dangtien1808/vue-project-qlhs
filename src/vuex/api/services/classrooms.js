@@ -49,5 +49,11 @@ export default {
       .post("http://localhost:3000/studentclass/delete", data)
       .then(response => Promise.resolve(response))
       .catch(error => Promise.reject(error));
+  },
+  getClassesByCodeStudent(mahocsinh) {
+    return axios
+      .get("http://localhost:3000/studentclass?mahocsinh=" + mahocsinh)
+      .then(response => Promise.resolve(response))
+      .catch(error => Promise.reject(error));
   }
 };

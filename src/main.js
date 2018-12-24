@@ -1,6 +1,7 @@
 import "@babel/polyfill";
 import Vue from "vue";
 import "./plugins/bootstrap-vue";
+import "./plugins/bootstrap-vue-typehead";
 import "./plugins/vue-session";
 import App from "./App.vue";
 import router from "./router";

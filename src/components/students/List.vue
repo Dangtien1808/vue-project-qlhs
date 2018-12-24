@@ -165,7 +165,7 @@ export default {
         singleSelect: true,
         showRefresh: true,
         toolbar: "#toolbar",
-        sortName: "namhoc",
+        sortName: "mahocsinh",
         sortOrder: "desc"
       });
       $("#table1").on("check.bs.table uncheck.bs.table ", () => {

@@ -4,14 +4,19 @@ import dataStudent from "../../lib/dataHeaderStudent";
 const state = {
   main: { column: dataStudent.column, listItem: [], isSelect: false },
   codeStudent: 1,
-  detailStudent: {}
+  detailStudent: {},
+  tablePointStudent: []
 };
 
 const getters = {
   headerDataStudent(state) {
     return state.main.column;
   },
+  dataTablePointStudent(state) {
+    return state.tablePointStudent;
+  },
   dataStudent(state) {
+    // console.log(state.listItem);
     return state.main.listItem;
   },
   selectStudent(state) {
@@ -43,6 +48,24 @@ const actions = {
         });
     });
   },
+  getTablePointStudents(ctx, data) {
+    return new Promise((resolve, reject) => {
+      services.students
+        .getTablePointStudent(data)
+        .then(response => {
+          if (response.status == 200) {
+            ctx.commit(types.FETCH_TABLE_POINTS_STUDENT, response.data);
+            resolve(true);
+          } else {
+            resolve(false);
+          }
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+
   deleteStudents(ctx, id) {
     return new Promise((resolve, reject) => {
       services.students
@@ -142,6 +165,9 @@ const mutations = {
   },
   [types.FETCH_CODE_STUDENTS](state, id) {
     state.codeStudent = id;
+  },
+  [types.FETCH_TABLE_POINTS_STUDENT](state, data) {
+    state.tablePointStudent = data;
   }
 };
 

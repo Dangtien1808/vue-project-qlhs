@@ -26,7 +26,7 @@ module.exports = {
       field: "sdt",
       title: "SĐT",
       valign: "middle",
-      searchable: "false"
+      searchable: false
     }
   ],
   listItem: [

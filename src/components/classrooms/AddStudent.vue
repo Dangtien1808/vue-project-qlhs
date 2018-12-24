@@ -98,12 +98,16 @@
             class="col-sm-3  pt-2 color-class"
           ><b>Nhập Mã Học Sinh Cần Thêm</b></label>
           <div class="col-sm-2">
-            <input
-              type="number"
-              id="student-class"
-              class="form-control color-class"
-              v-model="MaHocSinh"
-            >
+            <vue-bootstrap-typeahead
+              :data="dataStudent"
+              size="sm"
+              :serializer="s => {return s.mahocsinh + '-' + s.hoten}"
+              placeholder="Nhập Mã..."
+              :minMatchingChars="1"
+              v-model="txtStudent"
+              @hit="student = $event"
+            ></vue-bootstrap-typeahead>
+            <p>{{txtStudent}}</p>
           </div>
         </div>
         <hr>
@@ -114,12 +118,8 @@
               type="button"
               class="btn btn-primary mr-3 custom-width-btn"
               @click="Add"
-            >Thêm Lớp</button>
-            <button
-              type="button"
-              class="btn btn-primary mr-3 custom-width-btn"
-              @click="ResetData"
-            >Nhập Lại</button>
+            >Thêm Học Sinh</button>
+
             <button
               type="button"
               class="btn btn-primary mr-3 custom-width-btn"
@@ -134,7 +134,7 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-// import VueBootstrapTypeahead from "vue-bootstrap-typeahead";
+import VueBootstrapTypeahead from "vue-bootstrap-typeahead";
 export default {
   data() {
     return {
@@ -148,43 +148,53 @@ export default {
         sisotoida: 0,
         namhoc: ""
       },
-      MaHocSinh: 0
+      student: null,
+      txtStudent: ""
     };
   },
   components: {
-    // VueBootstrapTypeahead
+    VueBootstrapTypeahead
   },
+
   computed: {
-    ...mapGetters(["getDetailClass"])
+    ...mapGetters(["getDetailClass", "dataStudent"])
   },
   mounted() {
     if (this.getDetailClass.malop != undefined) {
       this.SetDataClass();
+      this.fetchStudent().then(res => {
+        if (res) {
+          console.log(res);
+        }
+      });
     } else {
       this.$router.push("/classroom/statistical");
     }
   },
   methods: {
-    ...mapActions(["AddStudentClass"]),
+    ...mapActions(["AddStudentClass", "fetchStudent"]),
     ComeBack() {
       this.$router.push("/classroom/statistical");
     },
     Add() {
-      this.AddStudentClass({
-        malop: this.classes.malop,
-        mahocsinh: this.MaHocSinh,
-        gvphutrach: this.classes.giaovienchunhiem
-      }).then(res => {
-        if (res) {
-          alert("Them Thanh Cong!!!");
-          this.$router.push("/classroom/statistical");
-        } else {
-          alert("Them That Bai!!!");
-        }
-      });
+      if (this.student.mahocsinh != undefined) {
+        this.AddStudentClass({
+          malop: this.classes.malop,
+          mahocsinh: this.student.mahocsinh,
+          gvphutrach: this.classes.giaovienchunhiem
+        }).then(res => {
+          if (res) {
+            alert("Them Thanh Cong!!!");
+            this.$router.push("/classroom/statistical");
+          } else {
+            alert("Them That Bai!!!");
+          }
+        });
+      }
     },
     ResetData() {
-      this.MaHocSinh = 0;
+      this.student = null;
+      this.txtStudent = "";
     },
     SetDataClass() {
       const that = this;
@@ -196,7 +206,8 @@ export default {
       that.classes.giaovienchunhiem = that.getDetailClass.giaovienchunhiem;
       that.classes.hoten = that.getDetailClass.hoten;
       that.classes.namhoc = that.getDetailClass.namhoc;
-      that.MaHocSinh = 0;
+      that.student = null;
+      that.txtStudent = "";
     }
   }
 };

@@ -6,12 +6,16 @@ const state = {
   listStudentClass: [],
   isSelectStudent: false,
   codeClass: 1,
-  detailClass: {}
+  detailClass: {},
+  listClassByCodeStudent: []
 };
 
 const getters = {
   getStudentsClass(state) {
     return state.listStudentClass;
+  },
+  getListClassByCodeStudent(state) {
+    return state.listClassByCodeStudent;
   },
   headerDataClass(state) {
     return state.main.column;
@@ -38,6 +42,23 @@ const actions = {
         .then(response => {
           if (response.status == 200) {
             commit(types.FETCH_CLASSROOMS, response.data);
+            resolve(true);
+          } else {
+            resolve(false);
+          }
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  },
+  getClassesByCodeStudents(ctx, mahocsinh) {
+    return new Promise((resolve, reject) => {
+      services.classrooms
+        .getClassesByCodeStudent(mahocsinh)
+        .then(response => {
+          if (response.status == 200) {
+            ctx.commit(types.FETCH_CLASS_BY_STUDENT, response.data);
             resolve(true);
           } else {
             resolve(false);
@@ -197,6 +218,10 @@ const mutations = {
   },
   [types.FETCH_LIST_STUDENT_CLASS](state, data) {
     state.listStudentClass = data;
+  },
+  [types.FETCH_CLASS_BY_STUDENT](state, data) {
+    console.log(data);
+    state.listClassByCodeStudent = data;
   },
   [types.FETCH_RESET_DETAIL_CLASSROOMS](state) {
     state.detailClass = {};

@@ -1,6 +1,17 @@
 import axios from "axios";
 
 export default {
+  getTablePointStudent(data) {
+    return axios
+      .get(
+        "http://localhost:3000/studentclass?mahocsinh=" +
+          data.mahocsinh +
+          "&malop=" +
+          data.malop
+      )
+      .then(response => Promise.resolve(response))
+      .catch(error => Promise.reject(error));
+  },
   getStudent(request = {}) {
     return axios
       .get("http://localhost:3000/students", request)
