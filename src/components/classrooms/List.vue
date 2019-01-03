@@ -23,6 +23,22 @@
           >
             <i class="glyphicon glyphicon-remove"></i> Danh Sách Học Sinh Của Lớp
           </button>
+          <button
+            id="inputPoint"
+            class="btn btn-dark mr-3"
+            @click="inputPoint"
+            disabled
+          >
+            <i class="glyphicon glyphicon-remove"></i> Nhập Điểm
+          </button>
+          <button
+            id="TablePoint"
+            class="btn btn-info mr-3"
+            @click="TablePoint"
+            disabled
+          >
+            <i class="glyphicon glyphicon-remove"></i> Xem Bảng Điểm
+          </button>
 
           <button
             id="detailClass"
@@ -82,6 +98,21 @@ export default {
     addClass() {
       this.$router.push("/classroom/add");
     },
+    TablePoint() {
+      let ids = $.map($("#table1").bootstrapTable("getSelections"), function(
+        row
+      ) {
+        return row.malop;
+      });
+      if (ids != null) {
+        let id = ids;
+        this.getInfoDetailClass(id[0]).then(res => {
+          if (res) {
+            this.$router.push("/classroom/tablePoint");
+          }
+        });
+      }
+    },
     detailClass() {
       let ids = $.map($("#table1").bootstrapTable("getSelections"), function(
         row
@@ -112,6 +143,21 @@ export default {
         });
       }
     },
+    inputPoint() {
+      let ids = $.map($("#table1").bootstrapTable("getSelections"), function(
+        row
+      ) {
+        return row.malop;
+      });
+      if (ids != null) {
+        let id = ids;
+        this.getInfoDetailClass(id[0]).then(res => {
+          if (res) {
+            this.$router.push("/classroom/listStudent");
+          }
+        });
+      }
+    },
     removeClass() {
       let ids = $.map($("#table1").bootstrapTable("getSelections"), function(
         row
@@ -131,6 +177,14 @@ export default {
                       values: id
                     });
                     $("#removeClass").prop(
+                      "disabled",
+                      !$("#table1").bootstrapTable("getSelections").length
+                    );
+                    $("#inputPoint").prop(
+                      "disabled",
+                      !$("#table1").bootstrapTable("getSelections").length
+                    );
+                    $("#TablePoint").prop(
                       "disabled",
                       !$("#table1").bootstrapTable("getSelections").length
                     );
@@ -187,6 +241,14 @@ export default {
         );
 
         $("#removeClass").prop(
+          "disabled",
+          !$("#table1").bootstrapTable("getSelections").length
+        );
+        $("#inputPoint").prop(
+          "disabled",
+          !$("#table1").bootstrapTable("getSelections").length
+        );
+        $("#TablePoint").prop(
           "disabled",
           !$("#table1").bootstrapTable("getSelections").length
         );

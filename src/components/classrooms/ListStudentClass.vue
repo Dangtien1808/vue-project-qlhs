@@ -1,7 +1,7 @@
 <template>
   <div class="box box-info">
     <div class="box-header with-border text-center">
-      <h2 class="box-title">Thêm Học Sinh Vào Lớp Học</h2>
+      <h3 class="box-title">Chọn Học Sinh Thuộc Lớp Cần Nhập Điểm</h3>
     </div>
     <div class="box-body">
       <div class="table-responsive">
@@ -89,51 +89,32 @@
             </div>
           </div>
         </div>
-        <hr>
-        <div class="form-group row mr-auto">
-          <div class="col-sm-1"></div>
-          <label
-            for="student-class"
-            class="col-sm-3  pt-2 color-class"
-          ><b>Nhập Mã Học Sinh Cần Thêm</b></label>
-          <div class="col-sm-2">
-            <vue-bootstrap-typeahead
-              :data="dataStudent"
-              size="sm"
-              :serializer="s => {return s.mahocsinh + '-' + s.hoten}"
-              placeholder="Nhập Mã..."
-              :minMatchingChars="1"
-              v-model="txtStudent"
-              @hit="student = $event"
-            ></vue-bootstrap-typeahead>
-            <p>{{txtStudent}}</p>
-          </div>
-        </div>
-        <hr>
-        <div class="form-group row">
-          <label class="col-sm-5"></label>
-          <div class="col-sm">
-            <button
-              type="button"
-              class="btn btn-primary mr-3 custom-width-btn"
-              @click="Add"
-            >Thêm Học Sinh</button>
+        <div id="toolbar">
 
-            <button
-              type="button"
-              class="btn btn-primary mr-3 custom-width-btn"
-              @click="ComeBack"
-            >Quay Lại</button>
-          </div>
+          <button
+            id="inputPointStudent"
+            class="btn btn-danger mr-3"
+            @click="inputPointStudent"
+            disabled
+          >
+            <i class="glyphicon glyphicon-remove"></i> Nhập Điểm
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary mr-3 custom-width-btn"
+            @click="ComeBack"
+          >Quay Lại</button>
         </div>
+        <table id="table"></table>
       </div>
+
     </div>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import VueBootstrapTypeahead from "vue-bootstrap-typeahead";
+import dataHeaderStudentClass from "../../lib/dataHeaderStudentClass";
 export default {
   data() {
     return {
@@ -146,56 +127,109 @@ export default {
         hoten: "",
         sisotoida: 0,
         namhoc: ""
-      },
-      student: null,
-      txtStudent: ""
+      }
     };
   },
-  components: {
-    VueBootstrapTypeahead
-  },
-
   computed: {
-    ...mapGetters(["getDetailClass", "dataStudent"])
+    ...mapGetters(["getStudentsClass", "getDetailClass"])
   },
   mounted() {
     if (this.getDetailClass.malop != undefined) {
-      this.SetDataClass();
-      this.fetchStudent().then(res => {
-        if (res) {
-          console.log(res);
-        }
-      });
+      this.setDataClass();
+      this.getListStudentClass(this.classes.malop)
+        .then(res => {
+          if (res) {
+            this.initTable();
+          }
+        })
+        .catch(error => console.log(error));
     } else {
-      this.$router.push("/classroom/statistical");
+      this.$router.push("/classroom");
     }
   },
   methods: {
-    ...mapActions(["AddStudentClass", "fetchStudent"]),
+    ...mapActions(["getListStudentClass", "getInfoDetailStudent"]),
     ComeBack() {
-      this.$router.push("/classroom/statistical");
+      this.$router.push("/classroom");
     },
-    Add() {
-      if (this.student.mahocsinh != undefined) {
-        this.AddStudentClass({
-          malop: this.classes.malop,
-          mahocsinh: this.student.mahocsinh,
-          gvphutrach: this.classes.giaovienchunhiem
-        }).then(res => {
+    inputPointStudent() {
+      let ids = $.map($("#table").bootstrapTable("getSelections"), function(
+        row
+      ) {
+        return row.mahocsinh;
+      });
+      if (ids != null) {
+        let id = ids;
+        this.getInfoDetailStudent(id[0]).then(res => {
           if (res) {
-            alert("Them Thanh Cong!!!");
-            this.$router.push("/classroom/statistical");
-          } else {
-            alert("Them That Bai!!!");
+            this.$router.push("/classroom/inputpointstudent");
           }
         });
       }
     },
-    ResetData() {
-      this.student = null;
-      this.txtStudent = "";
+
+    initTable() {
+      let that = this;
+      $("#table").bootstrapTable({
+        columns: [...dataHeaderStudentClass.column],
+        data: [...that.getStudentsClass],
+        classes: "table table-hover",
+        pagination: true,
+        pageSize: 5,
+        pageList: [5, 10, 15, "all"],
+        search: true,
+        singleSelect: true,
+        showRefresh: true,
+        toolbar: "#toolbar",
+        detailView: true,
+        detailFormatter: function detaiFormatter(index, row) {
+          let gioitinh = row.gioitinh == 1 ? "Nữ" : "Nam";
+          let html = `
+          <h4 class="ml-5">Thông Tin Cá Nhân</h4>
+          <div class="row">
+            <div class="col-sm-4">
+              <div class="row">
+                <label class="col-sm-4">Mã Học Sinh: </label>
+                <label> ${row.mahocsinh}</label>
+              </div>
+              <div class="row">
+                <label class="col-sm-4">Tên Học Sinh: </label>
+                <label> ${row.hoten}</label>
+              </div>
+              <div class="row">
+                <label class="col-sm-4">Ngày Sinh: </label>
+                <label> ${row.ngaysinh} </label>
+              </div>
+               <div class="row">
+                <label class="col-sm-4">Giới Tính: </label>
+                <label> ${gioitinh} </label>
+              </div>
+            </div>
+            <div class="col-sm-5">
+              <div class="row">
+                <label class="col-sm-4">SĐT: </label>
+                <label> ${row.sdt}</label>
+              </div>
+              <div class="row">
+                <label class="col-sm-4">Địa Chỉ: </label>
+                <label> ${row.diachi}</label>
+              </div>
+            </div>
+          </div>`;
+          return html;
+        }
+      });
+      $("#table").on("check.bs.table uncheck.bs.table ", () => {
+        $("#inputPointStudent").prop(
+          "disabled",
+          !$("#table").bootstrapTable("getSelections").length
+        );
+      });
+      $("#table").on("refresh.bs.table", () => {
+        $("#table").bootstrapTable("resetSearch");
+      });
     },
-    SetDataClass() {
+    setDataClass() {
       const that = this;
       that.classes.malop = that.getDetailClass.malop;
       that.classes.tenlop = that.getDetailClass.tenlop;
@@ -205,12 +239,14 @@ export default {
       that.classes.giaovienchunhiem = that.getDetailClass.giaovienchunhiem;
       that.classes.hoten = that.getDetailClass.hoten;
       that.classes.namhoc = that.getDetailClass.namhoc;
-      that.student = null;
-      that.txtStudent = "";
     }
   }
 };
 </script>
 
 <style scoped>
+.color-class {
+  color: blue;
+  font-size: 18px;
+}
 </style>

@@ -117,6 +117,11 @@
                     class="btn btn-primary mr-3 custom-width-btn"
                     @click="resetDataClassroom"
                   >Nhập Lại</button>
+                  <button
+                    type="button"
+                    class="btn btn-primary mr-3 custom-width-btn"
+                    @click="ComeBack"
+                  >Quay Lại</button>
                 </div>
               </div>
             </form>
@@ -151,6 +156,9 @@ export default {
   },
   methods: {
     ...mapActions(["getLevelClass", "fetchAllAccount", "AddClassroom"]),
+    ComeBack() {
+      this.$router.push("/classroom");
+    },
     AddClassrooms() {
       this.AddClassroom(this.classes).then(req => {
         if (req) {

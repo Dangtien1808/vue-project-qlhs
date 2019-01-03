@@ -7,15 +7,23 @@ const state = {
   isSelectStudent: false,
   codeClass: 1,
   detailClass: {},
-  listClassByCodeStudent: []
+  listClassByCodeStudent: [],
+  detailPoint: {},
+  dataTablePoint: []
 };
 
 const getters = {
+  getDetailPoint(state) {
+    return state.detailPoint;
+  },
   getStudentsClass(state) {
     return state.listStudentClass;
   },
   getListClassByCodeStudent(state) {
     return state.listClassByCodeStudent;
+  },
+  getDataTablePoint(state) {
+    return state.dataTablePoint;
   },
   headerDataClass(state) {
     return state.main.column;
@@ -173,6 +181,41 @@ const actions = {
       });
     });
   },
+  setInfoPointStudent(ctx, data) {
+    return new Promise(resolve => {
+      services.classrooms.setInfoPoint(data).then(res => {
+        if (res.status == 200) {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      });
+    });
+  },
+  getInfoPointStudent(ctx, data) {
+    return new Promise(resolve => {
+      services.classrooms.getInfoPoint(data).then(res => {
+        if (res.status == 200) {
+          ctx.commit(types.FETCH_INFOPOINT_STUDENT_CLASS_SUBJECT, res.data);
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      });
+    });
+  },
+  getTablePointByClass(ctx, data) {
+    return new Promise(resolve => {
+      services.classrooms.getTablePoint(data).then(res => {
+        if (res.status == 200) {
+          ctx.commit(types.FETCH_TABLE_POINT_STUDENT_CLASS_SUBJECT, res.data);
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      });
+    });
+  },
   AddStudentClass(ctx, data) {
     return new Promise(resolve => {
       services.classrooms.AddStudent(data).then(res => {
@@ -220,11 +263,16 @@ const mutations = {
     state.listStudentClass = data;
   },
   [types.FETCH_CLASS_BY_STUDENT](state, data) {
-    console.log(data);
     state.listClassByCodeStudent = data;
   },
   [types.FETCH_RESET_DETAIL_CLASSROOMS](state) {
     state.detailClass = {};
+  },
+  [types.FETCH_INFOPOINT_STUDENT_CLASS_SUBJECT](state, data) {
+    state.detailPoint = data[0];
+  },
+  [types.FETCH_TABLE_POINT_STUDENT_CLASS_SUBJECT](state, data) {
+    state.dataTablePoint = data;
   },
   [types.FETCH_CODE_CLASS](state, id) {
     state.codeClass = id;

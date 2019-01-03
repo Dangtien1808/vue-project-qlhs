@@ -26,12 +26,5 @@ module.exports = [
     router: {
       name: "student/list"
     }
-  },
-  {
-    icon: "fa fa-edit",
-    name: "Nhập Điểm",
-    router: {
-      name: "score"
-    }
   }
 ];

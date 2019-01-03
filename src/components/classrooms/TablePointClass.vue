@@ -1,7 +1,7 @@
 <template>
   <div class="box box-info">
     <div class="box-header with-border text-center">
-      <h2 class="box-title">Thêm Học Sinh Vào Lớp Học</h2>
+      <h2 class="box-title">Xem Bảng Điểm Học Sinh</h2>
     </div>
     <div class="box-body">
       <div class="table-responsive">
@@ -94,30 +94,49 @@
           <div class="col-sm-1"></div>
           <label
             for="student-class"
-            class="col-sm-3  pt-2 color-class"
-          ><b>Nhập Mã Học Sinh Cần Thêm</b></label>
-          <div class="col-sm-2">
-            <vue-bootstrap-typeahead
-              :data="dataStudent"
-              size="sm"
-              :serializer="s => {return s.mahocsinh + '-' + s.hoten}"
-              placeholder="Nhập Mã..."
-              :minMatchingChars="1"
-              v-model="txtStudent"
-              @hit="student = $event"
-            ></vue-bootstrap-typeahead>
-            <p>{{txtStudent}}</p>
+            class="col-sm-2  pt-2 color-class"
+          ><b>Chọn Học Kì</b></label>
+          <div class="col-sm-3">
+            <select
+              id="hocki"
+              class="form-control"
+              style="width:100%"
+              v-model="hocki"
+            >
+              <option value="1">Học Kì 1</option>
+              <option value="2">Học Kì 2</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group row mr-auto">
+          <div class="col-sm-1"></div>
+          <label
+            for="student-class"
+            class="col-sm-2  pt-2 color-class"
+          ><b>Chọn Môn Học</b></label>
+          <div class="col-sm-3">
+            <select
+              class="form-control"
+              id="technique-add"
+              v-model="mamon"
+            >
+              <option
+                v-for="subject in listSubjects"
+                :key="subject.mamon"
+                :value="subject.mamon"
+              >{{subject.tenmon}}</option>
+            </select>
           </div>
         </div>
         <hr>
-        <div class="form-group row">
+        <div class="form-group row mr-auto">
           <label class="col-sm-5"></label>
           <div class="col-sm">
             <button
               type="button"
               class="btn btn-primary mr-3 custom-width-btn"
-              @click="Add"
-            >Thêm Học Sinh</button>
+              @click="GetTablePoint"
+            >Xem Điểm</button>
 
             <button
               type="button"
@@ -126,14 +145,18 @@
             >Quay Lại</button>
           </div>
         </div>
+        <hr>
+        <h4>Bảng Điểm</h4>
+        <table id="table"></table>
+        <hr>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import dataHeaderTablePoint from "../../lib/dataHeaderTablePoint";
 import { mapGetters, mapActions } from "vuex";
-import VueBootstrapTypeahead from "vue-bootstrap-typeahead";
 export default {
   data() {
     return {
@@ -147,55 +170,25 @@ export default {
         sisotoida: 0,
         namhoc: ""
       },
-      student: null,
-      txtStudent: ""
+      mamon: 1,
+      hocki: 1
     };
   },
-  components: {
-    VueBootstrapTypeahead
-  },
-
+  components: {},
   computed: {
-    ...mapGetters(["getDetailClass", "dataStudent"])
+    ...mapGetters(["getDetailClass", "listSubjects", "getDataTablePoint"])
   },
   mounted() {
     if (this.getDetailClass.malop != undefined) {
-      this.SetDataClass();
-      this.fetchStudent().then(res => {
-        if (res) {
-          console.log(res);
-        }
-      });
+      this.setDataClass();
+      this.getSubjects().then(req => console.log(req));
     } else {
-      this.$router.push("/classroom/statistical");
+      this.$router.push("/classroom");
     }
   },
   methods: {
-    ...mapActions(["AddStudentClass", "fetchStudent"]),
-    ComeBack() {
-      this.$router.push("/classroom/statistical");
-    },
-    Add() {
-      if (this.student.mahocsinh != undefined) {
-        this.AddStudentClass({
-          malop: this.classes.malop,
-          mahocsinh: this.student.mahocsinh,
-          gvphutrach: this.classes.giaovienchunhiem
-        }).then(res => {
-          if (res) {
-            alert("Them Thanh Cong!!!");
-            this.$router.push("/classroom/statistical");
-          } else {
-            alert("Them That Bai!!!");
-          }
-        });
-      }
-    },
-    ResetData() {
-      this.student = null;
-      this.txtStudent = "";
-    },
-    SetDataClass() {
+    ...mapActions(["getSubjects", "getTablePointByClass"]),
+    setDataClass() {
       const that = this;
       that.classes.malop = that.getDetailClass.malop;
       that.classes.tenlop = that.getDetailClass.tenlop;
@@ -205,12 +198,41 @@ export default {
       that.classes.giaovienchunhiem = that.getDetailClass.giaovienchunhiem;
       that.classes.hoten = that.getDetailClass.hoten;
       that.classes.namhoc = that.getDetailClass.namhoc;
-      that.student = null;
-      that.txtStudent = "";
+    },
+    GetTablePoint() {
+      this.getTablePointByClass({
+        malop: this.classes.malop,
+        mamon: this.mamon,
+        hocki: this.hocki
+      }).then(req => {
+        if (req) {
+          this.InitTable();
+        }
+      });
+    },
+    InitTable() {
+      $("#table").bootstrapTable({
+        columns: [...dataHeaderTablePoint.columnTablePoint],
+        data: [...this.getDataTablePoint],
+        classes: "table table-hover",
+        sortName: "mamon",
+        sortOrder: "desc"
+      });
+    },
+    ComeBack() {
+      this.$router.push("/classroom");
     }
   }
 };
 </script>
 
 <style scoped>
+.color-class {
+  color: blue;
+  font-size: 18px;
+}
+
+.noresize {
+  resize: none;
+}
 </style>

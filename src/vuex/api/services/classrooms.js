@@ -55,5 +55,31 @@ export default {
       .get("http://localhost:3000/studentclass?mahocsinh=" + mahocsinh)
       .then(response => Promise.resolve(response))
       .catch(error => Promise.reject(error));
+  },
+  getInfoPoint(data) {
+    return axios
+      .get(
+        `http://localhost:3000/studentclass/infoPoint?mahocsinh=${
+          data.mahocsinh
+        }&malop=${data.malop}&mamon=${data.mamon}&hocki=${data.hocki}`
+      )
+      .then(response => Promise.resolve(response))
+      .catch(error => Promise.reject(error));
+  },
+  getTablePoint(data) {
+    return axios
+      .get(
+        `http://localhost:3000/studentclass/tablePoint?malop=${
+          data.malop
+        }&mamon=${data.mamon}&hocki=${data.hocki}`
+      )
+      .then(response => Promise.resolve(response))
+      .catch(error => Promise.reject(error));
+  },
+  setInfoPoint(data) {
+    return axios
+      .post(`http://localhost:3000/studentclass/editPoint`, data)
+      .then(response => Promise.resolve(response))
+      .catch(error => Promise.reject(error));
   }
 };

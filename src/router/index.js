@@ -8,13 +8,15 @@ import DetailClassroom from "../components/classrooms/Detail.vue";
 import AddClassroom from "../components/classrooms/Add.vue";
 import AddStudentClassroom from "../components/classrooms/AddStudent.vue";
 import StatisticalClassroom from "../components/classrooms/Statistical.vue";
+import ListStudentClassroom from "../components/classrooms/ListStudentClass.vue";
+import TablePointClass from "../components/classrooms/TablePointClass.vue";
+import InputPointStudent from "../components/classrooms/InputPointStudent.vue";
 import ListStudent from "../components/students/List.vue";
 import DetailStudent from "../components/students/Detail.vue";
 import AddStudent from "../components/students/Add.vue";
 import StatisticalStudent from "../components/students/StatisticalPoint.vue";
 import Classroom from "../views/Classroom.vue";
 import Student from "../views/Student.vue";
-import Score from "../views/Score.vue";
 import Account from "../views/Account.vue";
 import ProFile from "../views/ProFile.vue";
 
@@ -88,6 +90,30 @@ var router = new Router({
           meta: {
             requiresAuth: true
           }
+        },
+        {
+          path: "listStudent",
+          name: "classroom/listStudent",
+          component: ListStudentClassroom,
+          meta: {
+            requiresAuth: true
+          }
+        },
+        {
+          path: "tablePoint",
+          name: "classroom/tablePoint",
+          component: TablePointClass,
+          meta: {
+            requiresAuth: true
+          }
+        },
+        {
+          path: "inputpointstudent",
+          name: "classroom/inputpointstudent",
+          component: InputPointStudent,
+          meta: {
+            requiresAuth: true
+          }
         }
       ]
     },
@@ -124,14 +150,6 @@ var router = new Router({
           }
         }
       ]
-    },
-    {
-      path: "/score",
-      name: "score",
-      component: Score,
-      meta: {
-        requiresAuth: true
-      }
     },
     {
       path: "/account",
