@@ -182,6 +182,7 @@ export default {
     if (this.getDetailClass.malop != undefined) {
       this.setDataClass();
       this.getSubjects().then(req => console.log(req));
+      this.InitTable();
     } else {
       this.$router.push("/classroom");
     }
@@ -206,7 +207,8 @@ export default {
         hocki: this.hocki
       }).then(req => {
         if (req) {
-          this.InitTable();
+          console.log(this.getDataTablePoint[0].diem15phut);
+          $("#table").bootstrapTable("load", this.getDataTablePoint);
         }
       });
     },
@@ -216,7 +218,10 @@ export default {
         data: [...this.getDataTablePoint],
         classes: "table table-hover",
         sortName: "mamon",
-        sortOrder: "desc"
+        sortOrder: "desc",
+        pagination: true,
+        pageSize: 5,
+        pageList: [5, 10, 15, "all"]
       });
     },
     ComeBack() {
