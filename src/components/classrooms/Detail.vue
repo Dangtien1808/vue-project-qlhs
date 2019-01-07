@@ -202,6 +202,8 @@ export default {
           alert("thay doi thanh cong!!!");
           this.setNotEdit();
           this.$router.push("/classroom");
+        } else {
+          alert("thay doi that bai!!!");
         }
       });
     },

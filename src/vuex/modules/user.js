@@ -53,6 +53,23 @@ const actions = {
         });
     });
   },
+  checkInfoUser(ctx, username) {
+    return new Promise(resolve => {
+      services.users
+        .loadinfo(username)
+        .then(res => {
+          if (res.data.length == 0) {
+            resolve(true);
+          } else {
+            resolve(false);
+          }
+        })
+        .catch(error => {
+          resolve(false);
+          console.log(error);
+        });
+    });
+  },
   editUser(ctx, data) {
     return new Promise(resolve => {
       services.users.editUser(data).then(res => {

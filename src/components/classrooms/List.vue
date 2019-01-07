@@ -198,13 +198,19 @@ export default {
                     );
                     this.setCheckBoxClass(false);
                     ids = null;
-                    alert("Thanh Cong!!!");
+                    alert("Xóa Thành Công!!!");
                   }
                 })
-                .catch(error => console.log(error));
+                .catch(error => {
+                  console.log(error);
+                  alert("Xóa Thất Bại!!!");
+                });
             }
           })
-          .catch(err => console.log(err));
+          .catch(error => {
+            console.log(error);
+            alert("Xóa Thất Bại!!!");
+          });
       }
     },
     initTable() {

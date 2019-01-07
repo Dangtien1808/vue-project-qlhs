@@ -149,8 +149,8 @@
               </div>
               <hr>
               <div class="form-group row">
-                <label class="col-sm-4"></label>
-                <div class="col-sm-5">
+                <label class="col-sm-3"></label>
+                <div class="col-sm-5 text-center">
                   <button
                     type="button"
                     class="btn btn-primary mr-3 custom-width-btn"
@@ -173,6 +173,7 @@
                     type="button"
                     class="btn btn-primary mr-3 custom-width-btn"
                     @click="setNotEdit"
+                    v-if="!isNotEdit"
                   >Hủy</button>
                 </div>
               </div>
@@ -216,6 +217,8 @@ export default {
         if (req) {
           alert("thay doi thanh cong!!!");
           this.setNotEdit();
+        } else {
+          alert("thay doi Thất bại!!!");
         }
       });
     },

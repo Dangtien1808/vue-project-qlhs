@@ -48,9 +48,9 @@ const actions = {
         });
     });
   },
-  addAccount(ctx, data) {
+  addAccounts(ctx, data) {
     return new Promise((resolve, reject) => {
-      services.teachers
+      services.account
         .addAccount(data)
         .then(res => {
           console.log(res.status);

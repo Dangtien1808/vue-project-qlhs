@@ -146,6 +146,8 @@ export default {
         if (req) {
           alert("Them Học Sinh " + this.student.hoten + " Thanh Cong!!!");
           this.$router.push("/student");
+        } else {
+          alert("Them Học Sinh " + this.student.hoten + " Thất Bại!!!");
         }
       });
     },

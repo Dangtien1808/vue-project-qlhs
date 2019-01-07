@@ -116,7 +116,13 @@ export default {
   methods: {
     ...mapActions(["changePassword"]),
     ChangePassword() {
-      if (
+      if (this.passwordOld == "") {
+        alert("Mật Khẩu cũ không được để trống!!!!");
+      } else if (this.passwordNew == "")
+        alert("Mật Khẩu mới không được để trống!!!!");
+      else if (this.passwordNew != this.repasswordNew)
+        alert("Mật Khẩu nhập lại không chính xác!!!!");
+      else if (
         this.passwordOld != this.passwordNew &&
         this.passwordNew == this.repasswordNew
       ) {
@@ -126,6 +132,8 @@ export default {
         }).then(req => {
           if (req) {
             alert("đổi mật khẩu thành công!!!!");
+          } else {
+            alert("đổi mật khẩu thất bại!!!!");
           }
         });
       }

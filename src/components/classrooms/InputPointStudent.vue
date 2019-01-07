@@ -356,8 +356,9 @@ export default {
       this.setInfoPointStudent(this.infoPoint).then(res => {
         if (res) {
           this.getInfoPoint();
-          alert("cập nhật thành công!!");
           this.$router.push("/classroom/listStudent");
+        } else {
+          alert("cập nhật thất bại!!");
         }
       });
     },

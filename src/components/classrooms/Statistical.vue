@@ -192,6 +192,8 @@ export default {
 
                     lstMaHocSinh = null;
                     alert("Thanh Cong!!!");
+                  } else {
+                    alert("Thất Bại!!!");
                   }
                 })
                 .catch(error => console.log(error));

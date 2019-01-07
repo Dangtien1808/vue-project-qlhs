@@ -163,6 +163,8 @@ export default {
       this.AddClassroom(this.classes).then(req => {
         if (req) {
           alert("Them Lớp " + this.classes.tenlop + " Thanh Cong!!!");
+        } else {
+          alert("Them Lớp " + this.classes.tenlop + " Thất Bại!!!");
         }
       });
     },

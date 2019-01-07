@@ -1,10 +1,13 @@
 <template>
-  <aside id="slider" class="main-sidebar">
-    <!-- sidebar: style can be found in sidebar.less -->
+  <aside
+    id="slider"
+    class="main-sidebar"
+  >
     <section class="sidebar">
-      <!-- /.search form -->
-      <!-- sidebar menu: : style can be found in sidebar.less -->
-      <ul data-widget="tree" class="sidebar-menu">
+      <ul
+        data-widget="tree"
+        class="sidebar-menu"
+      >
         <SlideItem
           v-for="(item,index) in slideMenuItems"
           :key="index"
@@ -14,7 +17,6 @@
         ></SlideItem>
       </ul>
     </section>
-    <!-- /.sidebar -->
   </aside>
 </template>
 

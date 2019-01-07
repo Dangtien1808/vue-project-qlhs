@@ -185,6 +185,8 @@ export default {
           this.resetDataEditStudent();
           this.setNotEdit();
           this.$router.push("/student");
+        } else {
+          alert("thay doi Thất Bại!!!");
         }
       });
     },
