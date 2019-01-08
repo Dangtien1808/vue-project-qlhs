@@ -146,7 +146,19 @@
           </div>
         </div>
         <hr>
-        <h4>Bảng Điểm</h4>
+        <div class="row">
+          <h4>Bảng Điểm</h4>
+          <div class="pull-right">
+            <JsonExcel
+              class="btn btn-default"
+              :data="[...getDataTablePoint]"
+              :fields="[...dataHeaderTablePoint.columnTablePoint]"
+              name="bangdiem.xls"
+            >
+              Xuất Báo Cáo
+            </JsonExcel>
+          </div>
+        </div>
         <table id="table"></table>
         <hr>
       </div>
@@ -157,6 +169,8 @@
 <script>
 import dataHeaderTablePoint from "../../lib/dataHeaderTablePoint";
 import { mapGetters, mapActions } from "vuex";
+import JsonExcel from "json-to-excel";
+
 export default {
   data() {
     return {
@@ -174,7 +188,9 @@ export default {
       hocki: 1
     };
   },
-  components: {},
+  components: {
+    JsonExcel
+  },
   computed: {
     ...mapGetters(["getDetailClass", "listSubjects", "getDataTablePoint"])
   },
@@ -207,7 +223,6 @@ export default {
         hocki: this.hocki
       }).then(req => {
         if (req) {
-          console.log(this.getDataTablePoint[0].diem15phut);
           $("#table").bootstrapTable("load", this.getDataTablePoint);
         }
       });
