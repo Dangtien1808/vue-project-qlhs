@@ -44,6 +44,12 @@ export default {
       .then(response => Promise.resolve(response))
       .catch(error => Promise.reject(error));
   },
+  checkStudentClass(data) {
+    return axios
+      .get(`http://localhost:3000/studentclass/check?malop=${data.malop}&mahocsinh=${data.mahocsinh}`)
+      .then(response => Promise.resolve(response))
+      .catch(error => Promise.reject(error));
+  },
   deleteStudent(data) {
     return axios
       .post("http://localhost:3000/studentclass/delete", data)

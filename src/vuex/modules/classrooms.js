@@ -227,6 +227,19 @@ const actions = {
       });
     });
   },
+  checkAddStudentClass(ctx, data) {
+    return new Promise(resolve => {
+      services.classrooms.checkStudentClass(data).then(res => {
+        if (res.status == 200) {
+          if (res.data.length > 0) {
+            resolve(false);
+          }
+        } else {
+          resolve(true);
+        }
+      });
+    });
+  },
   deleteStudentClass(ctx, data) {
     return new Promise(resolve => {
       services.classrooms.deleteStudent(data).then(res => {

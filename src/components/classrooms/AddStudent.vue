@@ -106,7 +106,7 @@
               v-model="txtStudent"
               @hit="student = $event"
             ></vue-bootstrap-typeahead>
-            <p>{{txtStudent}}</p>
+            <!-- <p>{{txtStudent}}</p> -->
           </div>
         </div>
         <hr>
@@ -177,16 +177,26 @@ export default {
     },
     Add() {
       if (this.student.mahocsinh != undefined) {
-        this.AddStudentClass({
+        this.checkAddStudentClass({
           malop: this.classes.malop,
           mahocsinh: this.student.mahocsinh,
           gvphutrach: this.classes.giaovienchunhiem
-        }).then(res => {
-          if (res) {
-            alert("Them Thanh Cong!!!");
-            this.$router.push("/classroom/statistical");
+        }).then(req => {
+          if (req) {
+            this.AddStudentClass({
+              malop: this.classes.malop,
+              mahocsinh: this.student.mahocsinh,
+              gvphutrach: this.classes.giaovienchunhiem
+            }).then(res => {
+              if (res) {
+                alert("Them Thanh Cong!!!");
+                this.$router.push("/classroom/statistical");
+              } else {
+                alert("Them That Bai!!!");
+              }
+            });
           } else {
-            alert("Them That Bai!!!");
+            alert("Học sinh đã tồn tại trong lớp!!!");
           }
         });
       }
